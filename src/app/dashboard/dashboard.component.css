@@ -1,0 +1,8 @@
+.container { 
+    max-height: calc(100% - (var(--header-h) * 2));
+    overflow: scroll;
+    width: 100%;
+}
+*::-webkit-scrollbar {
+    display: none;
+}

@@ -9,10 +9,10 @@ export default () =>  {
 
 
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'us-east-1_SB7MJKYNj',
+        userPoolId: 'us-east-1_XXVCqUZ6o',
 
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: 'a1b2c3d4e5f6g7h8i9j0k1l2m3',
+        userPoolWebClientId: '4lmtl704f9sdpit34m5ruo27a6',
 
         // OPTIONAL - This is used when autoSignIn is enabled for Auth.signUp
         // 'code' is used for Auth.confirmSignUp, 'link' is used for email link verification
@@ -22,7 +22,7 @@ export default () =>  {
         // Note: if the secure flag is set to true, then the cookie transmission requires a secure protocol
         cookieStorage: {
         // REQUIRED - Cookie domain (only required if cookieStorage is provided)
-        domain: 'localstorage:4200',
+        domain: window.location.hostname,
         // OPTIONAL - Cookie path
         path: '/',
         // OPTIONAL - Cookie expiration in days
@@ -38,23 +38,19 @@ export default () =>  {
         // authenticationFlowType: 'USER_PASSWORD_AUTH',
 
         // // OPTIONAL - Hosted UI configuration
-        // oauth: {
-        // domain: 'your_cognito_domain',
-        // scope: [
-        //     'phone',
-        //     'email',
-        //     'profile',
-        //     'openid',
-        //     'aws.cognito.signin.user.admin',
-        // ],
-        // redirectSignIn: 'http://localhost:3000/',
-        // redirectSignOut: 'http://localhost:3000/',
-        // responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
-        // },
+        oauth: {
+        domain: 'lashroombyeli.auth.us-east-1.amazoncognito.com',
+        scope: [
+            'phone',
+            'email',
+            'openid',
+            // 'aws.cognito.signin.user.admin',
+            // 'profile',
+        ],
+        redirectSignIn: window.location.origin,
+        redirectSignOut: window.location.origin,
+        responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
+        },
         },
     });
 }
-
-
-// You can get the current config object
-const currentConfig = Auth.configure();

@@ -1,0 +1,34 @@
+header {
+    height: var(--footer-h);
+    max-width: 100%;
+    position: sticky;
+    top: 0;
+    padding: 0;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+}
+.mat-toolbar-row, .mat-toolbar-single-row {
+    padding: 0 1rem !important;
+    height: 100%;
+}
+ul {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+li {
+    list-style: none;
+}
+
+a:link {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+a:visited {
+    text-decoration: inherit;
+    color: inherit;
+}

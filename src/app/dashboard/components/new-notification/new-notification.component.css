@@ -1,0 +1,34 @@
+.schedule-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw;
+    margin: 20px auto;
+    gap: 5vh;
+}
+.schedule-form > section {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    
+}
+.input-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.input-field {
+   width: 25%;
+}
+
+@media (max-width: 426px) {
+    .schedule-form > section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-field {
+        width: 100%;
+     }
+  }

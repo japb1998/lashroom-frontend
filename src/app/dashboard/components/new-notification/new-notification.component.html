@@ -1,0 +1,78 @@
+<div style="margin: 10px;">
+    <h1 style="text-align: center;">
+        Scheduler
+    </h1>
+    <form class="schedule-form" [formGroup]="scheduleFormGroup">
+        <section>
+            <header>
+                <h1>
+                    Client Information
+                </h1>
+            </header>
+            <div class="input-div">
+                <mat-form-field class="input-field">
+                    <mat-label>First Name</mat-label>
+                    <input type="text" matInput placeholder="John" formControlName="firstName">
+                    <mat-error *ngIf="scheduleFormGroup.get('firstName')?.status">
+                        Please enter a valid First Name
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="input-field">
+                    <mat-label>Last Name</mat-label>
+                    <input type="text" matInput placeholder="Doe" formControlName="lastName">
+                    <mat-error *ngIf="scheduleFormGroup.get('lastName')?.status">
+                        Please enter a valid last name
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </section>
+        <section>
+            <header>
+                <h1>
+                    Contact Information
+                </h1>
+            </header>
+            <div class="input-div">
+                <mat-form-field class="input-field">
+                    <mat-label>Email</mat-label>
+                    <input type="text" matInput placeholder="example@gmail.com" formControlName="email">
+                    <mat-error *ngIf="scheduleFormGroup.get('email')?.status">
+                        Please enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="input-field">
+                    <mat-label>Telephone</mat-label>
+                    <span matPrefix>+1 &nbsp;</span>
+                    <input type="tel" matInput placeholder="+1555 5555 555" formControlName="phoneNumber">
+                    <mat-icon matSuffix>mode_edit</mat-icon>
+                    <mat-error *ngIf="scheduleFormGroup.get('phoneNumber')?.status">
+                        Please enter a valid phone number
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </section>
+        <section>
+            <header>
+                <h1>
+                    Notification Setup
+                </h1>
+            </header>
+            <div class="input-div">
+                <mat-form-field class="input-field">
+                    <mat-label>Send In N Days</mat-label>
+                    <input type="number" matInput placeholder="1" formControlName="numberOfDays" min="1" max="15">
+
+                    <mat-error *ngIf="scheduleFormGroup.get('numberOfDays')?.status">
+                        Enter a value between 1 and 15 Days
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </section>
+
+        <div class="input-div">
+            <button mat-raised-button color="primary" [disabled]="!scheduleFormGroup.valid">Create Notification
+                Schedule</button>
+        </div>
+    </form>
+
+</div>

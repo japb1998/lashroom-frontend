@@ -1,0 +1,16 @@
+footer {
+    height: var(--footer-h);
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+    padding: 0
+}
+.mat-toolbar-row, .mat-toolbar-single-row {
+    padding: 0 !important;
+    height: 100%;
+}
+.footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
