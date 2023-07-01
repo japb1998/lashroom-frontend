@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { DashboardService, INewSchedule } from '../../dashboard.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
@@ -24,29 +24,29 @@ export class NewNotificationComponent implements OnInit {
     })
   }
 
-  scheduleFormGroup = new FormGroup({
-    firstName: new FormControl('', {
+  scheduleFormGroup = new UntypedFormGroup({
+    firstName: new UntypedFormControl('', {
       validators: [Validators.required, Validators.minLength(2)]
     }),
-    lastName: new FormControl('', {
+    lastName: new UntypedFormControl('', {
       validators: [Validators.required, Validators.minLength(2)]
     }),
-    email: new FormControl('', {
+    email: new UntypedFormControl('', {
       validators: [Validators.email]
     }),
-    phoneNumber: new FormControl('', {
+    phoneNumber: new UntypedFormControl('', {
       validators: [Validators.pattern(/^[0-9]{10}$/)]
     }),
-    numberOfDays: new FormControl('', {
+    numberOfDays: new UntypedFormControl('', {
       validators: [Validators.required, Validators.min(1), Validators.max(15)]
     }),
-    phone: new FormControl(false, {
+    phone: new UntypedFormControl(false, {
       validators: [Validators.required]
     }),
-    deliverByPhone: new FormControl(false, {
+    deliverByPhone: new UntypedFormControl(false, {
       validators: [Validators.required]
     }),
-    deliverByEmail: new FormControl(false, {
+    deliverByEmail: new UntypedFormControl(false, {
       validators: [Validators.required]
     })
   })
