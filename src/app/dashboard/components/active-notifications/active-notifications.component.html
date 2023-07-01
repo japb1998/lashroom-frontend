@@ -28,7 +28,12 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <mat-paginator [length]="notificationResultLenght" [pageSize]="10" aria-label="Select page of Employees search results"></mat-paginator>
+      <mat-paginator 
+               [length]="notificationResultLenght"
+               [pageSize]="10"
+               [showFirstLastButtons]="true"
+               [pageSizeOptions]="[10]"
+                aria-label="Select page of Employees search results"></mat-paginator>
       <ng-template #noClient>
         <h4 style="text-align: center;">No Active Notifications</h4>
       </ng-template>

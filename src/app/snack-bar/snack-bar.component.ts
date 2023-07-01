@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
 
 @Component({
   selector: 'app-snack-bar',
@@ -7,8 +7,9 @@ import { MatSnackBarRef } from '@angular/material/snack-bar';
   styleUrls: ['./snack-bar.component.css']
 })
 export class SnackBarComponent implements OnInit {
+  snackBarRef = inject(MatSnackBarRef);
   constructor() { }
-
+  
   ngOnInit(): void {
   }
 

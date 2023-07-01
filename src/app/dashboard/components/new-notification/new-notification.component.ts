@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { DashboardService, INewSchedule } from '../../dashboard.service'
 import { ActivatedRoute, Router } from '@angular/router'
-import { MatSnackBar } from '@angular/material/snack-bar'
 import { SnackBarComponent } from '../../../snack-bar/snack-bar.component'
 import { map, of, switchMap } from 'rxjs'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'app-new-notification',

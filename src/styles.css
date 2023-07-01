@@ -9,3 +9,14 @@
   
 
 body { margin: 0;}
+
+@media (max-width: 426px) {
+ body {
+  position: absolute;
+ }
+ footer {
+  position: relative !important;
+  width: 100% !important;
+  display: flex;
+ }
+}

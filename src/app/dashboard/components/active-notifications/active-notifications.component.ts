@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DashboardService, INewSchedule } from '../../dashboard.service';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -15,12 +15,11 @@ export class ActiveNotificationsComponent implements OnInit {
   notificationFilteredList: INewSchedule[] = [];
   notificationResultLenght = 0;
   _notificationListSub!:Subscription;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   
   constructor(private dashboardService: DashboardService) { 
     this.dashboardService.getNotifications()
   }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
   
@@ -34,7 +33,7 @@ export class ActiveNotificationsComponent implements OnInit {
       
       this.notificationList = n    
       this.notificationResultLenght = this.notificationList.length
-      this.notificationFilteredList = this.notificationList.slice(((this.paginator?.pageIndex ?? 0) * 10 ), ((this.paginator?.pageIndex ?? 0) + 1 )*10)
+      this.notificationFilteredList = this.notificationList.slice((this.paginator?.pageIndex * 10 ), (this.paginator?.pageIndex + 1 )*10)
     })
   }
 
@@ -43,5 +42,6 @@ export class ActiveNotificationsComponent implements OnInit {
     if (this._notificationListSub)this._notificationListSub.unsubscribe()
     
   }
+
 
 }
