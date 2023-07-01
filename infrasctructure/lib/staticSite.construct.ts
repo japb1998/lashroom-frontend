@@ -20,7 +20,8 @@ export class StatisSite extends Construct {
 
         new BucketDeployment(this, `BucketDeployment${this.stage}`, {
             destinationBucket: bucket,
-            sources: [Source.asset(path.resolve(__dirname, '../../dist'))]
+            sources: [Source.asset(path.resolve(__dirname, '../../dist/lashroom-frontend'))],
+
         });
 
         const originAccessIdentity = new OriginAccessIdentity(this, 'OriginAccessIdentity');
@@ -35,7 +36,7 @@ export class StatisSite extends Construct {
                 {
                     httpStatus: 404,
                     responseHttpStatus: 200,
-                    responsePagePath: 'index.html'
+                    responsePagePath: '/'
                 }
             ]
         })

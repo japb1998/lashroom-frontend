@@ -4,5 +4,6 @@ import * as cdk from 'aws-cdk-lib';
 import { InfrasctructureStack } from '../lib/infrasctructure-stack';
 
 const app = new cdk.App();
-new InfrasctructureStack(app, 'InfrasctructureStack', {
+const stage = process.env.STAGE ?? 'dev'
+new InfrasctructureStack(app, `FrontEndStack-${stage}`, {
 });
