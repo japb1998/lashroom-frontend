@@ -1,0 +1,38 @@
+<div class="dashboard-section">
+    <h2 style="text-align: center; display: flex; align-items: center; justify-content: center;"><span>Previous Clients </span><mat-icon>person_outline</mat-icon></h2>
+    <table mat-table [dataSource]="filteredList" style="width: 100%" *ngIf="resultsLength ;else noClient">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="Phone" >
+          <th mat-header-cell *matHeaderCellDef> Phone </th>
+          <td mat-cell *matCellDef="let element"> {{element?.phone || '-'}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let element"> {{element?.email  || '-'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Schedule">
+          <th mat-header-cell *matHeaderCellDef> Schedule </th>
+          <td mat-cell *matCellDef="let element"> <button mat-button [routerLink]="['new-notification', element.id]">Schedule </button> </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [length]="resultsLength" [pageSize]="10" aria-label="Select page of Employees search results"></mat-paginator>
+      <ng-template #noClient>
+        <h4 style="text-align: center;">No Clients</h4>
+      </ng-template>
+</div >

@@ -10,9 +10,7 @@ export class AppComponent implements OnInit{
   title = 'lashroomFrontend';
 
   ngOnInit(): void {
-    Auth.currentSession().then((u) => {
-      console.log(u.getIdToken().getJwtToken())
-    })
+    /* Use for debuging Auth.currentSession().then((u) => {}) */
   }
   
 

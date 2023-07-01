@@ -1,3 +1,6 @@
+.scheduler-container {
+    margin: 1rem .5rem var(--footer-h) .5 !important
+}
 .schedule-form {
     display: flex;
     flex-direction: column;
@@ -17,11 +20,26 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-}
-.input-field {
-   width: 25%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
+.submit {
+    flex-direction: column !important;
+    max-width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+.input-field {
+   width: 30%;
+}
+
+.notification-methods {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+
+}
 @media (max-width: 426px) {
     .schedule-form > section {
         flex-direction: column;
@@ -31,4 +49,8 @@
     .input-field {
         width: 100%;
      }
+
+    .notification-methods {
+        width: 100%;
+    }
   }

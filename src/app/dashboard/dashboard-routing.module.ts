@@ -15,7 +15,16 @@ const routes: Routes = [
       },
       {
         path: 'new-notification',
-        component: NewNotificationComponent
+        children: [
+          {
+            path: ':id',
+            component: NewNotificationComponent
+          },
+          {
+            path: '**',
+            component: NewNotificationComponent
+          }
+        ]
       },
     ]
    }
