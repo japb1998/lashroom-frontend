@@ -10,6 +10,7 @@ import { DashBoardMainComponent } from './components/main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ActiveNotificationsComponent } from './components/active-notifications/active-notifications.component';
 import { ClientsComponent } from './components/clients/clients.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ClientsComponent } from './components/clients/clients.component';
     ReactiveFormsModule,
     DashboardRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   exports: []
 })
