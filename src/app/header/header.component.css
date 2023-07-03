@@ -1,9 +1,10 @@
 header {
     height: var(--footer-h);
-    max-width: 100%;
-    position: sticky;
+    width: 100%;
+    position: fixed;
     top: 0;
     padding: 0;
+    z-index: 100;
 }
 .header {
     display: flex;

@@ -1,5 +1,5 @@
-.container { 
-    max-height: calc(100% - var(--header-h) * 2);
+.container {
+    padding: var(--header-h) 0;
     overflow: scroll;
     width: 100%;
 }

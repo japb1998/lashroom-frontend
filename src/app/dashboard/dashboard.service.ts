@@ -69,6 +69,9 @@ export class DashboardService {
       }
     }).pipe(
       catchError(e => {
+        if (e?.status && e.status == 401) {
+          window.location.reload();
+        }
         console.error(e)
         return of({
           count: 0,
@@ -105,6 +108,9 @@ export class DashboardService {
       })
       .pipe(
         catchError(e => {
+          if (e?.status && e.status == 401) {
+            window.location.reload();
+          }
           console.error(e)
           return of({
             count: 0,
