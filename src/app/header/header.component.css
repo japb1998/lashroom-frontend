@@ -33,3 +33,15 @@ a:visited {
     text-decoration: inherit;
     color: inherit;
 }
+
+@media (max-width: 426px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #logo {
+        display: none;
+    }
+  }
