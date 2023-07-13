@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActiveNotificationsComponent } from './components/active-notifications/active-notifications.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { RouterModule } from '@angular/router';
+import { AddClientComponent } from './components/add-client/add-client.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { RouterModule } from '@angular/router';
     NewNotificationComponent,
     DashBoardMainComponent,
     ActiveNotificationsComponent,
-    ClientsComponent
+    ClientsComponent,
+    AddClientComponent
   ],
   imports: [
     CommonModule,

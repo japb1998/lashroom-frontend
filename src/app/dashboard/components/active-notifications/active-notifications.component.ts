@@ -15,9 +15,14 @@ export class ActiveNotificationsComponent implements OnInit {
   notificationFilteredList: INewSchedule[] = [];
   notificationResultLenght = 0;
   _notificationListSub!:Subscription;
-  
-  constructor(private dashboardService: DashboardService) { 
-    this.dashboardService.getNotifications()
+  isLoading:boolean;
+  constructor(private dashboardService: DashboardService) {
+
+    this.isLoading = true;
+
+    this.dashboardService.getNotifications().finally(() => {
+      this.isLoading = false
+    })
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 

@@ -34,12 +34,15 @@ a:visited {
     color: inherit;
 }
 
-@media (max-width: 426px) {
+@media (max-width: 450px) {
     .header {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    ul {
+      
     }
     #logo {
         display: none;
