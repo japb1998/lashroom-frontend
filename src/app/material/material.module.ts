@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import {MatTooltipModule} from '@angular/material/tooltip';
 const modules = [
   MatButtonModule,
   MatFormFieldModule,
@@ -19,7 +20,8 @@ const modules = [
   MatPaginatorModule,
   MatSnackBarModule,
   MatInputModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatTooltipModule
 ]
 
 @NgModule({

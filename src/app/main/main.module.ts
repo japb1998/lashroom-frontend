@@ -6,6 +6,7 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -19,7 +20,8 @@ import { FooterComponent } from '../footer/footer.component';
     CommonModule,
     DashboardModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ],
   exports: [
     MainComponent

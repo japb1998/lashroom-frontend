@@ -8,30 +8,30 @@
     <ul>
       <li>
         <a [routerLink]="['/dashboard']">
-          <button mat-button>
+          <button mat-button  matTooltip="Dashboard" >
 
-           Dashboard
+            <fa-icon [icon]="faHome" style="color: #4d4d4d" size="xl"></fa-icon>
           </button>
         </a>
       </li>
       <li>
         <a [routerLink]="['/dashboard/new-notification']">
-          <button mat-button>
+          <button mat-button matTooltip="Create New Schedule">
 
-            Schedule New
+            <fa-icon [icon]="faClock" style="color: #4d4d4d" size="xl"></fa-icon>
           </button>
         </a>
       </li>
       <li>
         <a [routerLink]="['/dashboard/new-client']">
-          <button mat-button>
+          <button mat-button  matTooltip="Add Client">
 
-            Add Client
+            <fa-icon [icon]="faPerson" style="color: #4d4d4d" size="xl"></fa-icon>
           </button>
         </a>
       </li>
       <li>
-        <button mat-button (click)="logout()"> Logout</button>
+        <button mat-button matTooltip="logout"  (click)="logout()"> <fa-icon [icon]="faArrow" style="color: #4d4d4d" size="xl"></fa-icon></button>
       </li>
     </ul>
   </mat-toolbar>

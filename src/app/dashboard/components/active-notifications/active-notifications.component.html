@@ -1,6 +1,6 @@
 <div class="dashboard-section">
-  <h2 style="text-align: center; display: flex; align-items: center; justify-content: center;"><span> Active
-      Notifications </span><mat-icon> email</mat-icon></h2>
+  <h2 style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem"><span> Active
+      Notifications </span> <fa-icon [icon]="faEnvelope" style="color: #4d4d4d"></fa-icon></h2>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
     <table mat-table [dataSource]="notificationFilteredList" style="width: 100%"
       *ngIf="notificationResultLenght; else noClient">

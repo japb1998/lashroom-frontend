@@ -10,6 +10,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainModule } from './main/main.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
 
 initAmplify()
 
@@ -25,9 +29,17 @@ initAmplify()
     BrowserAnimationsModule,
     MaterialModule,
     MainModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faEnvelope
+    );
+ }
+}

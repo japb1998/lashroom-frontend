@@ -3,6 +3,7 @@ import { DashboardService, IClient } from '../../dashboard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription, filter, merge, of, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { faUsersLine } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-clients',
@@ -18,7 +19,7 @@ export class ClientsComponent implements OnInit {
   paginatedList: IClient[] = [];
   resultsLength = this.clientList.length;
   isLoading:boolean;
-
+  faUsers = faUsersLine;
   searchTerm : FormControl = new FormControl('');
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

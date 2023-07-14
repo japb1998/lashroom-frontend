@@ -12,6 +12,7 @@ import { ActiveNotificationsComponent } from './components/active-notifications/
 import { ClientsComponent } from './components/clients/clients.component';
 import { RouterModule } from '@angular/router';
 import { AddClientComponent } from './components/add-client/add-client.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AddClientComponent } from './components/add-client/add-client.component
     DashboardRoutingModule,
     HttpClientModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ],
   exports: []
 })

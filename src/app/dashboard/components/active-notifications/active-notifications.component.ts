@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DashboardService, INewSchedule } from '../../dashboard.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-active-notifications',
@@ -16,6 +16,7 @@ export class ActiveNotificationsComponent implements OnInit {
   notificationResultLenght = 0;
   _notificationListSub!:Subscription;
   isLoading:boolean;
+  faEnvelope = faEnvelope
   constructor(private dashboardService: DashboardService) {
 
     this.isLoading = true;
