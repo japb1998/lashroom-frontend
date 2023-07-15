@@ -6,7 +6,7 @@
             Client View
         </h1>
         <section style="width: 60vw; margin: 0 auto">
-            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable ? 'on' : 'off'}}</span></mat-slide-toggle>
+            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable.value ? 'on' : 'off'}}</span></mat-slide-toggle>
         </section>
         <form class="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
             <section>
