@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { DashboardService, INewClient } from '../../dashboard.service';
+
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClientService, INewClient } from '../../client.service';
 
 @Component({
   selector: 'app-add-client',
@@ -10,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./add-client.component.css']
 })
 export class AddClientComponent {
-  constructor(private dashboardService: DashboardService, private router: Router,private _snackBar: MatSnackBar) {
+  constructor(private clientService: ClientService, private router: Router,private _snackBar: MatSnackBar) {
 
   }
   clientFormGroup = new UntypedFormGroup({
@@ -39,7 +40,7 @@ export class AddClientComponent {
       description: this.clientFormGroup.get('description')?.value
     };
 
-    this.dashboardService.createClient(newClient).then(() => {
+    this.clientService.createClient(newClient).then(() => {
       this.clientFormGroup.reset()
       this.router.navigate(['/'])
       this.openSnackBar('Client Created', 'close')

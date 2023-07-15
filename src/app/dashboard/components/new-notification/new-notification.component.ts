@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
-import { DashboardService, INewSchedule } from '../../dashboard.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { SnackBarComponent } from '../../../snack-bar/snack-bar.component'
 import { map, of, switchMap } from 'rxjs'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { INewSchedule, NotificationService } from '../../notification.service'
+import { ClientService } from '../../client.service'
 
 @Component({
   selector: 'app-new-notification',
@@ -14,7 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 export class NewNotificationComponent implements OnInit {
   validContact!: boolean
   constructor (
-    private dashboardService: DashboardService,
+    private notificationService: NotificationService,
+    private clientService: ClientService,
     private router: Router,
     private _snackBar: MatSnackBar,
     private activeRouting: ActivatedRoute
@@ -56,7 +58,7 @@ export class NewNotificationComponent implements OnInit {
       .pipe(
         switchMap(({ id }) => {
           if (id) {
-            return this.dashboardService.$clientList.pipe(
+            return this.clientService.$clientList.pipe(
               map(clients => clients.find(client => id === client.id))
             )
           } else {
@@ -139,7 +141,7 @@ export class NewNotificationComponent implements OnInit {
     if (this.scheduleFormGroup.get('deliverByPhone')?.value) {
       schedule.deliveryMethods.push(0)
     }
-    this.dashboardService
+    this.notificationService
       .createNewSchedule(schedule)
       .then(() => {
         this.scheduleFormGroup.reset()

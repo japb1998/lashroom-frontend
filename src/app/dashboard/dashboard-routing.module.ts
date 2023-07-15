@@ -4,6 +4,7 @@ import { NewNotificationComponent } from './components/new-notification/new-noti
 import { DashboardComponent } from './dashboard.component';
 import { DashBoardMainComponent } from './components/main/main.component';
 import { AddClientComponent } from './components/add-client/add-client.component';
+import { SingleClientComponent } from './components/single-client/single-client.component';
 
 const routes: Routes = [
    {
@@ -13,6 +14,15 @@ const routes: Routes = [
       {
         path: '',
         component: DashBoardMainComponent
+      },
+      {
+        path: 'client',
+        children: [
+          {
+            path: ':id',
+            component: SingleClientComponent
+          }
+        ]
       },
       {
         path: 'new-notification',

@@ -13,6 +13,7 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { RouterModule } from '@angular/router';
 import { AddClientComponent } from './components/add-client/add-client.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SingleClientComponent } from './components/single-client/single-client.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DashBoardMainComponent,
     ActiveNotificationsComponent,
     ClientsComponent,
-    AddClientComponent
+    AddClientComponent,
+    SingleClientComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,84 @@
+<div class="form-container">
+
+    <div>
+
+        <h1 style="text-align: center;">
+            Client View
+        </h1>
+        <section style="width: 60vw; margin: 0 auto">
+            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable ? 'on' : 'off'}}</span></mat-slide-toggle>
+        </section>
+        <form class="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
+            <section>
+                <header>
+                    <h1>
+                        Client Information
+                    </h1>
+                </header>
+                <div class="input-div">
+                    <mat-form-field class="input-field">
+                        <mat-label>First Name</mat-label>
+                        <input [disabled]="!isEditable" type="text" matInput placeholder="John"
+                            formControlName="firstName">
+                        <mat-error *ngIf="clientFormGroup.get('firstName')?.status">
+                            Please enter a valid First Name
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="input-field">
+                        <mat-label>Last Name</mat-label>
+                        <input type="text" matInput placeholder="Doe" formControlName="lastName">
+                        <mat-error *ngIf="clientFormGroup.get('lastName')?.status">
+                            Please enter a valid last name
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </section>
+            <section>
+                <header>
+                    <h1>
+                        Contact Information
+                    </h1>
+                </header>
+                <div class="input-div">
+                    <mat-form-field class="input-field">
+                        <mat-label>Email</mat-label>
+                        <input type="text" matInput placeholder="example@gmail.com" formControlName="email">
+                        <mat-error *ngIf="!clientFormGroup.get('phoneNumber')?.status">
+                            Please enter a valid email address or Phone Number
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="input-field">
+                        <mat-label>Telephone</mat-label>
+                        <span matPrefix>+1 &nbsp;</span>
+                        <input type="tel" matInput placeholder="+1555 5555 555" formControlName="phoneNumber">
+                        <mat-icon matSuffix>mode_edit</mat-icon>
+                        <mat-error *ngIf="!clientFormGroup.get('email')?.status">
+                            Please enter a valid email address or Phone Number
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </section>
+            <section>
+                <header>
+                    <h1>
+                        Description
+                    </h1>
+                </header>
+                <div class="input-div">
+                    <mat-form-field class="input-field">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+            </section>
+            <div class="input-div submit">
+                <button mat-raised-button color="primary" [disabled]="!clientFormGroup.valid">Update
+
+                </button>
+
+            </div>
+
+
+        </form>
+    </div>
+</div>

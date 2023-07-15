@@ -5,11 +5,13 @@ header {
     top: 0;
     padding: 0;
     z-index: 100;
+    
 }
 .header {
     display: flex;
     justify-content: space-between;
     max-width: 100%;
+    
 }
 .mat-toolbar-row, .mat-toolbar-single-row {
     padding: 0 1rem !important;

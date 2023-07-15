@@ -18,16 +18,12 @@ export class StatisSite extends Construct {
             bucketName: `frontend-${this.bucketName}-${this.stage}`
           })
 
-        new BucketDeployment(this, `BucketDeployment${this.stage}`, {
-            destinationBucket: bucket,
-            sources: [Source.asset(path.resolve(__dirname, '../../dist/lashroom-frontend'))],
-
-        });
+        
 
         const originAccessIdentity = new OriginAccessIdentity(this, 'OriginAccessIdentity');
         bucket.grantRead(originAccessIdentity);
 
-        new Distribution(this, 'Distribution', {
+        const distribution = new Distribution(this, 'Distribution', {
             defaultRootObject: 'index.html',
             defaultBehavior: {
               origin: new S3Origin(bucket, {originAccessIdentity}),
@@ -39,7 +35,14 @@ export class StatisSite extends Construct {
                     responsePagePath: '/'
                 }
             ]
-        })
+        });
+
+        new BucketDeployment(this, `BucketDeployment${this.stage}`, {
+            destinationBucket: bucket,
+            sources: [Source.asset(path.resolve(__dirname, '../../dist/lashroom-frontend'))],
+            distribution,
+            distributionPaths: ['/*']
+        });
     }
     
 }

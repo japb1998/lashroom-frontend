@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DashboardService, INewSchedule } from '../../dashboard.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { INewSchedule, NotificationService } from '../../notification.service';
 
 @Component({
   selector: 'app-active-notifications',
@@ -17,11 +17,11 @@ export class ActiveNotificationsComponent implements OnInit {
   _notificationListSub!:Subscription;
   isLoading:boolean;
   faEnvelope = faEnvelope
-  constructor(private dashboardService: DashboardService) {
+  constructor(private notificationService: NotificationService) {
 
     this.isLoading = true;
 
-    this.dashboardService.getNotifications().finally(() => {
+    this.notificationService.getNotifications().finally(() => {
       this.isLoading = false
     })
   }
@@ -35,7 +35,7 @@ export class ActiveNotificationsComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this._notificationListSub = this.dashboardService.$notificationList.subscribe((n) => {
+    this._notificationListSub = this.notificationService.$notificationList.subscribe((n) => {
       
       this.notificationList = n    
       this.notificationResultLenght = this.notificationList.length

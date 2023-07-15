@@ -18,36 +18,42 @@
     </form>
   </div>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
-    <table mat-table [dataSource]="paginatedList" style="width: 100%" *ngIf="resultsLength; else noClient">
+    <table mat-table [dataSource]="paginatedList" style="width: 90%" *ngIf="resultsLength; else noClient">
 
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.clientName }}</td>
+        <td mat-cell *matCellDef="let element" [routerLink]="['client', element.id]" class="client-name">{{ isMobile ? element.clientName?.split(' ')[0] : element.clientName }}</td>
       </ng-container>
 
 
-      <ng-container matColumnDef="Phone">
+      <ng-container matColumnDef="Phone" *ngIf="!isMobile">
         <th mat-header-cell *matHeaderCellDef>Phone</th>
         <td mat-cell *matCellDef="let element">{{ element?.phone || '-' }}</td>
       </ng-container>
 
 
-      <ng-container matColumnDef="Email">
+      <ng-container matColumnDef="Email" *ngIf="!isMobile">
         <th mat-header-cell *matHeaderCellDef>Email</th>
         <td mat-cell *matCellDef="let element">{{ element?.email || '-' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="Schedule">
-        <th mat-header-cell *matHeaderCellDef>Schedule</th>
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
-          <button mat-button [routerLink]="['new-notification', element.id]">
-            Schedule
-          </button>
+            <span class='pointer' matTooltip="New Notification">
+              <fa-icon [icon]="faClock" style="color: #4d4d4d" size="xl"  [routerLink]="['new-notification', element.id]"></fa-icon>
+            </span>
+            <span id="icon-margin"></span>
+
+            <span  class='pointer' matTooltip="Edit">
+            <fa-icon [icon]="faPen" style="color: #4d4d4d" size="xl" [routerLink]="['client', element.id]"></fa-icon>
+            </span>
+          
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
     </table>
   </ng-template>
   <ng-template #loading>
