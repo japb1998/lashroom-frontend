@@ -1,12 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@aws-amplify/ui-angular/theme.css';
-@import url('https://fonts.googleapis.com/css2?family=Arvo&display=swap');
 
 :root {
     --footer-h: 85px;
     --header-h: 85px;
-    font-family: 'Arvo', serif !important; 
+    font-family: 'Arvo', serif !important;
   }
   
-
 body { margin: 0;}
+
+@media (max-width: 426px) {
+  .mat-toolbar-row, .mat-toolbar-single-row {
+    white-space: wrap !important;
+  }
+
+}

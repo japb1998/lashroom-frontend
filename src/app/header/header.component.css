@@ -1,14 +1,17 @@
 header {
     height: var(--footer-h);
-    max-width: 100%;
-    position: sticky;
+    width: 100%;
+    position: fixed;
     top: 0;
     padding: 0;
+    z-index: 100;
+    
 }
 .header {
     display: flex;
     justify-content: space-between;
     max-width: 100%;
+    
 }
 .mat-toolbar-row, .mat-toolbar-single-row {
     padding: 0 1rem !important;
@@ -32,3 +35,18 @@ a:visited {
     text-decoration: inherit;
     color: inherit;
 }
+
+@media (max-width: 450px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    ul {
+      
+    }
+    #logo {
+        display: none;
+    }
+  }

@@ -1,18 +1,37 @@
 <header>
   <mat-toolbar class="header">
-    <span>
+    <span id="logo">
       <a [routerLink]="['/dashboard']">
-        LashRoom Scheduler
+        <img src="/assets/ISOLOGO NEGRO.png" alt="" height="75px">
       </a>
     </span>
     <ul>
       <li>
-        <a [routerLink]="['/dashboard/new-notification']">
-          <button mat-button>
+        <a [routerLink]="['/dashboard']">
+          <button mat-button  matTooltip="Dashboard" >
 
-            Schedule New
+            <fa-icon [icon]="faHome" style="color: #4d4d4d" size="xl"></fa-icon>
           </button>
         </a>
+      </li>
+      <li>
+        <a [routerLink]="['/dashboard/new-notification']">
+          <button mat-button matTooltip="Create New Schedule">
+
+            <fa-icon [icon]="faClock" style="color: #4d4d4d" size="xl"></fa-icon>
+          </button>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/dashboard/new-client']">
+          <button mat-button  matTooltip="Add Client">
+
+            <fa-icon [icon]="faPerson" style="color: #4d4d4d" size="xl"></fa-icon>
+          </button>
+        </a>
+      </li>
+      <li>
+        <button mat-button matTooltip="logout"  (click)="logout()"> <fa-icon [icon]="faArrow" style="color: #4d4d4d" size="xl"></fa-icon></button>
       </li>
     </ul>
   </mat-toolbar>

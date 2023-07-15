@@ -1,0 +1,1 @@
+STAGE=dev PROJECT=lashroom cdk deploy

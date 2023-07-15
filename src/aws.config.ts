@@ -11,7 +11,7 @@ export default () =>  {
         // OPTIONAL - Amazon Cognito User Pool ID
         userPoolId: 'us-east-1_XXVCqUZ6o',
 
-        // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+        // OPTIONAL - Amazon Cognito Web IClient ID (26-char alphanumeric string)
         userPoolWebClientId: '4lmtl704f9sdpit34m5ruo27a6',
 
         // OPTIONAL - This is used when autoSignIn is enabled for Auth.signUp

@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { NewNotificationComponent } from './components/new-notification/new-notification.component';
 import { DashboardComponent } from './dashboard.component';
 import { DashBoardMainComponent } from './components/main/main.component';
+import { AddClientComponent } from './components/add-client/add-client.component';
+import { SingleClientComponent } from './components/single-client/single-client.component';
 
 const routes: Routes = [
    {
@@ -14,9 +16,31 @@ const routes: Routes = [
         component: DashBoardMainComponent
       },
       {
-        path: 'new-notification',
-        component: NewNotificationComponent
+        path: 'client',
+        children: [
+          {
+            path: ':id',
+            component: SingleClientComponent
+          }
+        ]
       },
+      {
+        path: 'new-notification',
+        children: [
+          {
+            path: ':id',
+            component: NewNotificationComponent
+          },
+          {
+            path: '**',
+            component: NewNotificationComponent
+          }
+        ]
+      },
+      {
+        path: 'new-client',
+        component: AddClientComponent
+      }
     ]
    }
 ];

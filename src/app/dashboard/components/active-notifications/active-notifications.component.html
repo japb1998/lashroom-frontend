@@ -1,0 +1,47 @@
+<div class="dashboard-section">
+  <h2 style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem"><span> Active
+      Notifications </span> <fa-icon [icon]="faEnvelope" style="color: #4d4d4d"></fa-icon></h2>
+  <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
+    <table mat-table [dataSource]="notificationFilteredList" style="width: 100%"
+      *ngIf="notificationResultLenght; else noClient">
+
+
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="Phone">
+        <th mat-header-cell *matHeaderCellDef> Phone </th>
+        <td mat-cell *matCellDef="let element"> {{element?.phone || '-'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="Email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element?.email || '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element">{{element.date}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </ng-template>
+  <ng-template #loading>
+    <div style="width: 100%; display: flex; justify-content: center; padding: 2rem;"> <mat-spinner></mat-spinner></div>
+  </ng-template>
+  <mat-paginator [length]="notificationResultLenght" [pageSize]="10" [showFirstLastButtons]="true"
+    [pageSizeOptions]="[10]" aria-label="Select page of Employees search results"></mat-paginator>
+
+  <ng-template #noClient>
+    <h4 style="text-align: center;">No Active Notifications</h4>
+  </ng-template>
+
+
+
+</div>

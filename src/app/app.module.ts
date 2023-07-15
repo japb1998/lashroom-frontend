@@ -8,16 +8,19 @@ import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainModule } from './main/main.module';
-import { HeaderComponent } from './header/header.component';
-import { MainComponent } from './main/main.component';
-import { FooterComponent } from './footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
 
 initAmplify()
 
 @NgModule({
   declarations: [
     AppComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +29,17 @@ initAmplify()
     BrowserAnimationsModule,
     MaterialModule,
     MainModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faEnvelope
+    );
+ }
+}
