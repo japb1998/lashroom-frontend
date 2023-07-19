@@ -17,4 +17,4 @@ jobs:
       - name: Install dependencies
         run: npm install && npm install -g aws-cdk-lib
       - name: Deploy stack
-        run: STAGE=dev PROJECT=lashroom npm run deploy
+        run: STAGE=dev PROJECT=lashroom cdk synth && cdk  deploy
