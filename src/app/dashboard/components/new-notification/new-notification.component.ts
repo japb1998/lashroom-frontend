@@ -58,16 +58,17 @@ export class NewNotificationComponent implements OnInit {
       .pipe(
         switchMap(({ id }) => {
           if (id) {
-            return this.clientService.$clientList.pipe(
-              map(clients => clients.find(client => id === client.id))
-            )
+            return of(id)
           } else {
             return of(undefined)
           }
         })
       )
-      .subscribe(client => {
-        if (client) {
+      .subscribe(async (id) => {
+        if (id) {
+
+          const client = await this.clientService.getSingleClient(id)
+
           this.scheduleFormGroup.patchValue({
             firstName:
               client.clientName?.split(' ')?.length > 1

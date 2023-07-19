@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from 'aws-amplify';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,12 @@ export class AppComponent implements OnInit{
   title = 'lashroomFrontend';
 
   ngOnInit(): void {
-    // Auth.currentSession().then(console.log) 
+    if (environment?.log === 'debug') {
+      Auth.currentSession().then((c) => {
+
+        console.log(c.getIdToken().getJwtToken())
+      })
+    }
   }
   
 

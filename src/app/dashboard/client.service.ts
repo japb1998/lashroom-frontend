@@ -102,27 +102,45 @@ export class ClientService {
     }
   }
 
-  // add once implemented
-  // async getSingleClient(client: INewClient) {
-  //   const token = this.tokenId ?? (await this.getTokenId())
+  async getSingleClient(id: string) {
+    const token = this.tokenId ?? (await this.getTokenId())
 
-  //   if (!token) {
-  //     throw new Error('User is not authenticated')
-  //   }
+    if (!token) {
+      throw new Error('User is not authenticated')
+    }
 
-  //   try {
-  //     await lastValueFrom(
-  //       this.http.get(`${environment.apiUrl}/clients/${}`, client, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       })
-  //     );
-  //   } catch {
-  //     throw new Error('Failed To Create Client')
-  //   }
-  // }
+    try {
+      return await lastValueFrom(
+        this.http.get<IClient>(`${environment.apiUrl}/clients/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      );
+    } catch {
+      throw new Error('Failed To Get Client')
+    }
+  }
+  async deleteClient(id: string) {
+    const token = this.tokenId ?? (await this.getTokenId())
 
+    if (!token) {
+      throw new Error('User is not authenticated')
+    }
+
+    try {
+      await lastValueFrom(
+        this.http.delete<void>(`${environment.apiUrl}/clients/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      );
+      this.clientList = this.clientList.filter(c => c.id !== id)
+    } catch {
+      throw new Error('Failed To Delete Client')
+    }
+  }
   async updateClient(client: IClient) {
     const token = this.tokenId ?? (await this.getTokenId())
 

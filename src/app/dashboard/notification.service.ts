@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Auth } from 'aws-amplify'
 import {
@@ -10,15 +10,18 @@ import {
 } from 'rxjs'
 import { environment } from 'src/environments/environment'
 
-
-
 export interface INewSchedule {
+  id?: string
   email: string
   phone: string
   deliveryMethods: number[]
   clientName: string
   nextNotification: string
   date?: string
+}
+
+export interface ISchedule extends INewSchedule {
+  id: string
 }
 
 @Injectable({
@@ -60,7 +63,7 @@ export class NotificationService {
     const token = this.tokenId ?? (await this.getTokenId())
 
     if (!token) {
-      throw new Error('User is not authenticated')
+      window.location.href = '/login'
     }
 
     try {
@@ -80,7 +83,7 @@ export class NotificationService {
     const token = this.tokenId ?? (await this.getTokenId())
 
     if (!token) {
-      throw new Error('User is not authenticated')
+      window.location.href = '/login'
     }
     new Promise(resolve => {
       this.http
@@ -105,7 +108,13 @@ export class NotificationService {
           })
         )
         .subscribe(({ records: schedules }) => {
-          schedules = schedules?.sort((a, b) => a.date && b.date ? (new Date(a.date).getDate() < new Date(b.date).getDate() ? -1 : 1) : 0)
+          schedules = schedules?.sort((a, b) =>
+            a.date && b.date
+              ? new Date(a.date).getDate() < new Date(b.date).getDate()
+                ? -1
+                : 1
+              : 0
+          )
           this.notificationList = schedules.map(s => {
             const date = s.date ? new Date(s.date).toLocaleDateString() : ''
             return {
@@ -119,4 +128,64 @@ export class NotificationService {
     })
   }
 
+  async getNotificationById (id: string) {
+    const token = this.tokenId ?? (await this.getTokenId())
+
+    if (!token) {
+      window.location.href = '/login'
+    }
+    new Promise(resolve => {
+      this.http
+        .get<ISchedule>(`${environment.apiUrl}/schedule/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .pipe(
+          catchError(e => {
+            if (e?.status && e.status == 401) {
+              window.location.reload()
+            }
+            console.error(e)
+            return of(undefined)
+          })
+        )
+        .subscribe((notification?: ISchedule) => {
+          resolve(notification)
+        })
+    })
+  }
+
+  async removeNotification(id: string) {
+    const token = this.tokenId ?? (await this.getTokenId())
+
+    if (!token) {
+      window.location.href = '/login'
+    }
+
+    new Promise(resolve => {
+      this.http
+        .delete<void>(`${environment.apiUrl}/schedule/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .pipe(
+          catchError(e => {
+            if (e?.status && e.status == 401) {
+              window.location.reload()
+            }
+            console.error(e)
+            return of(undefined)
+          })
+        )
+        .subscribe((_void) => {
+
+          if (_void !== undefined) {
+            this.notificationList = this.notificationList.filter(n => n.id !== id)
+          }
+            resolve(1)
+        })
+    })
+  }
 }

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription, catchError, map, of, switchMap } from 'rxjs'
 import { ClientService, IClient } from '../../client.service'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 
 @Component({
   selector: 'app-single-client',
@@ -17,6 +18,7 @@ import { ClientService, IClient } from '../../client.service'
 export class SingleClientComponent {
   _editableSub!: Subscription
   #clientId: string = ''
+  faTrashCan = faTrashCan;
 
   constructor (
     private clientService: ClientService,
@@ -35,13 +37,11 @@ export class SingleClientComponent {
     this.activeRouting.params
       .pipe(
         switchMap(({ id }: { id?: string }) => {
-          return this.clientService.$clientList.pipe(
-            map(clientList => {
-              const result = clientList.filter(c => c.id === id)
-
-              return result.length ? result[0] : undefined
-            })
-          )
+         
+          if (!id) {
+            return of(undefined);
+          }
+          return this.clientService.getSingleClient(id)
         }),
         catchError(e => {
           console.error(e)
@@ -49,23 +49,32 @@ export class SingleClientComponent {
           return of(undefined)
         })
       )
-      .subscribe(client => {
-        if (client) {
-          this.#clientId = client.id
-          this.clientFormGroup.patchValue({
-            firstName:
-              client.clientName?.split(' ')?.length > 1
-                ? client.clientName?.split(' ')[0]
-                : '',
-            lastName:
-              client.clientName?.split(' ')?.length > 1
-                ? client.clientName.split(' ')[1]
-                : '',
-            email: client.email ?? '',
-            phoneNumber: client.phone ?? '',
-            description: client.description
-          })
+      .subscribe((payload?: { id?: string}) => {
+        const  id  = payload?.id;
+        
+        if (!id) {
+          console.error('No user by this Id')
+          return
         }
+        this.clientService.getSingleClient(id).then(client => {
+          if (client) {
+            this.#clientId = client.id
+            this.clientFormGroup.patchValue({
+              firstName:
+                client.clientName?.split(' ')?.length > 1
+                  ? client.clientName?.split(' ')[0]
+                  : '',
+              lastName:
+                client.clientName?.split(' ')?.length > 1
+                  ? client.clientName.split(' ')[1]
+                  : '',
+              email: client.email ?? '',
+              phoneNumber: client.phone ?? '',
+              description: client.description
+            })
+          }
+        })
+        
       })
   }
   clientFormGroup = new UntypedFormGroup({
@@ -108,10 +117,20 @@ export class SingleClientComponent {
       })
       .catch(e => {
         console.error(e)
-        this.openSnackBar('Failed to create Client', 'x')
+        this.openSnackBar(!this.#clientId ? 'Failed to create client' : 'Failed to update client', 'x')
       })
   }
 
+  deleteClient() {
+
+    this.clientService.deleteClient(this.#clientId).then(() => {
+      this._snackBar.open('Successfully Deleted Client','x')
+      this.router.navigate(['/'])
+    }).catch((e) => {
+      console.error(e.message);
+      this._snackBar.open('Failed to Delete Client','x')
+    })
+  }
   openSnackBar (message: string, action: string) {
     this._snackBar.open(message, action)
   }
@@ -119,7 +138,6 @@ export class SingleClientComponent {
   toggleEdit (isEditable: boolean) {
     if (isEditable) {
       this.clientFormGroup.enable()
-      this.clientFormGroup.get('email')?.disable()
     } else {
       this.clientFormGroup.disable()
     }
