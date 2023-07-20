@@ -23,4 +23,4 @@ jobs:
       - name: Build FE App
         run : npm run build
       - name: Deploy stack
-        run: npx aws-cdk synth && npx aws-cdk deploy
+        run: npx aws-cdk bootstrap && npx aws-cdk synth && npx aws-cdk deploy
