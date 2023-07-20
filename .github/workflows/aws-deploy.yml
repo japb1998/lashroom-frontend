@@ -15,6 +15,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-west-1'
       - name: Install cdk
-        run: npm install && npm install -g aws-cdk & cd infrasctructure && npm install
+        run: npm install && npm install -g aws-cdk & cd infrasctructure && npm install && cd ..
       - name: Deploy stack
         run: STAGE=dev PROJECT=lashroom cdk synth && cdk  deploy
