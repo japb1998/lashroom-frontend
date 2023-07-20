@@ -193,7 +193,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "cd45988054112e3877c12690cbe1da8af72054932858768687a831e245e37b62.zip"
+     "d304c0a5c85cac5482c1a6a24028f5bc5814a7e505a9cffa2b9a2fffcbafd394.zip"
     ],
     "DestinationBucketName": {
      "Ref": "StaticSitedevBucket744CA868"
