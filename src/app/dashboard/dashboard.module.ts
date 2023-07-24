@@ -15,6 +15,11 @@ import { AddClientComponent } from './components/add-client/add-client.component
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SingleClientComponent } from './components/single-client/single-client.component';
 
+import { BrowserModule } from "@angular/platform-browser";
+import { NgxEditorModule } from "ngx-editor";
+import { TextEditorComponent } from './components/text-editor/text-editor.component';
+
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -23,7 +28,8 @@ import { SingleClientComponent } from './components/single-client/single-client.
     ActiveNotificationsComponent,
     ClientsComponent,
     AddClientComponent,
-    SingleClientComponent
+    SingleClientComponent,
+    TextEditorComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +40,10 @@ import { SingleClientComponent } from './components/single-client/single-client.
     HttpClientModule,
     FormsModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxEditorModule
   ],
   exports: []
 })

@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DashBoardMainComponent } from './components/main/main.component';
 import { AddClientComponent } from './components/add-client/add-client.component';
 import { SingleClientComponent } from './components/single-client/single-client.component';
+import { TextEditorComponent } from './components/text-editor/text-editor.component';
 
 const routes: Routes = [
    {
@@ -40,6 +41,10 @@ const routes: Routes = [
       {
         path: 'new-client',
         component: AddClientComponent
+      },
+      {
+        path: "edit",
+        component: TextEditorComponent
       }
     ]
    }

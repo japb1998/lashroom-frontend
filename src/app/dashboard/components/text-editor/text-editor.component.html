@@ -1,0 +1,28 @@
+<div class="container d-flex p-2 editor">
+    <h1>Email Editor</h1>
+    <form [formGroup]="form">
+        <div class="editor">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor 
+            [editor]="editor" 
+            [(ngModel)]="html" 
+          
+            [placeholder]="'Write your email notification here...'"
+            formControlName="editorContent" 
+            >
+            </ngx-editor>
+        </div>
+    </form>
+    <div class="container">
+        <h2>Preview</h2>
+        <div style="margin: 1rem 0; border: 1px solid black; white-space: pre-wrap;" [innerHtml]="html"></div>
+        <pre style="padding: 1rem; border: 1px solid black;">{{html}}</pre>
+        
+        <h4>Workaround :</h4>
+        <div style="margin: 1rem 0; border: 1px solid black; white-space: pre-wrap;" [innerHtml]="fixTentative"></div>
+        <pre style="padding: 1rem; border: 1px solid black;">{{fixTentative}}</pre>
+
+    </div>
+    
+</div>

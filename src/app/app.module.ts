@@ -16,6 +16,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgxEditorModule } from "ngx-editor";
+
 initAmplify()
 
 @NgModule({
@@ -24,11 +29,16 @@ initAmplify()
     SnackBarComponent
   ],
   imports: [
+    
     BrowserModule,
+    CommonModule,
     AmplifyAuthenticatorModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    NgxEditorModule,
+    FormsModule,
+    ReactiveFormsModule,
     MainModule,
     HttpClientModule,
     FontAwesomeModule,
@@ -39,6 +49,7 @@ initAmplify()
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

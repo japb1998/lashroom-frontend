@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { AuthGuard } from './authentication/guard/auth.guard';
 import { MainComponent } from './main/main.component';
+//import { EmailEditorComponent } from './email-editor/email-editor.component';
+
 
 const routes: Routes = [
     {
@@ -23,7 +25,8 @@ const routes: Routes = [
     {
         path: "**",
         redirectTo: "dashboard"
-    }
+    },
+   
 ];
 
 
