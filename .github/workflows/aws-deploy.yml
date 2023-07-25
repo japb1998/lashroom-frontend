@@ -1,7 +1,7 @@
 on: [push, workflow_dispatch]
 
 env: 
-  STAGE: int
+  STAGE: dev
   PROJECT: lashroom
 jobs:
   aws_cdk:
