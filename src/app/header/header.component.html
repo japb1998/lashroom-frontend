@@ -31,6 +31,14 @@
         </a>
       </li>
       <li>
+        <a [routerLink]="['/dashboard/edit']">
+          <button mat-button  matTooltip="Edit Email">
+
+            <fa-icon [icon]="faEnvelope" style="color: #4d4d4d" size="xl"></fa-icon>
+          </button>
+        </a>
+      </li>
+      <li>
         <button mat-button matTooltip="logout"  (click)="logout()"> <fa-icon [icon]="faArrow" style="color: #4d4d4d" size="xl"></fa-icon></button>
       </li>
     </ul>
