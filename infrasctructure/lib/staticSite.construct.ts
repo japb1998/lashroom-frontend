@@ -37,7 +37,7 @@ export class StatisSite extends Construct {
             ]
         });
 
-        new BucketDeployment(this, `BucketDeployment${this.stage}`, {
+        new BucketDeployment(this, `${process.env.PROJECT}-BucketDeployment-${this.stage}`, {
             destinationBucket: bucket,
             sources: [Source.asset(path.resolve(__dirname, '../../dist/lashroom-frontend'))],
             distribution,

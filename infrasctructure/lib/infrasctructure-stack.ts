@@ -8,6 +8,6 @@ export class InfrasctructureStack extends cdk.Stack {
   stage: string = process.env.STAGE ?? 'dev'
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    new StatisSite(this, `StaticSite-${this.stage}`,{})
+    new StatisSite(this, `${process.env.PROJECT}-StaticSite-${this.stage}`,{})
   }
 }
