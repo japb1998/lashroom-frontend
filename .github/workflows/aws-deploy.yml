@@ -21,6 +21,15 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-west-1'
+      - name: Set STAGE environment variable based on branch
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "STAGE=production" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" = "refs/heads/development" ]; then
+            echo "STAGE=dev" >> $GITHUB_ENV
+          else
+            echo "STAGE=dev" >> $GITHUB_ENV
+          fi
       - name: Install cdk
         run: npm install && cd infrasctructure && npm install && cd ..
       - name: Build FE App
