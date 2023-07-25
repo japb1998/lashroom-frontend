@@ -5,8 +5,8 @@
         <h1 style="text-align: center;">
             Client View
         </h1>
-        <section style="width: 60vw; margin: 0 auto">
-            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable.value ? 'on' : 'off'}}</span></mat-slide-toggle>
+        <section style="width: 60vw; margin: 0 auto; display: flex; gap: 1rem; align-items: center;justify-content: space-between;">
+            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable.value ? 'on' : 'off'}}</span></mat-slide-toggle> <span matTooltip="delete client" style="cursor: pointer;" (click)="deleteClient()"><fa-icon [icon]="faTrashCan" style="color: rgb(180, 26, 26)" size="xl"></fa-icon> </span>
         </section>
         <form class="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
             <section>

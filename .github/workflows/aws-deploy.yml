@@ -1,0 +1,26 @@
+on: [push, workflow_dispatch]
+
+env: 
+  STAGE: int
+  PROJECT: lashroom
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-west-1'
+      - name: Install cdk
+        run: npm install && cd infrasctructure && npm install && cd ..
+      - name: Build FE App
+        run : npm run build
+      - name: Deploy stack
+        run: npx aws-cdk bootstrap && npx aws-cdk synth && npx aws-cdk deploy --require-approval never
