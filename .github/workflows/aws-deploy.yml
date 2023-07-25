@@ -2,9 +2,9 @@ on:
   push:
     branches:
       - main
+      - development
 
 env: 
-  STAGE: dev
   PROJECT: lashroom
 jobs:
   aws_cdk:
@@ -24,7 +24,7 @@ jobs:
       - name: Set STAGE environment variable based on branch
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "STAGE=production" >> $GITHUB_ENV
+            echo "STAGE=prod" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" = "refs/heads/development" ]; then
             echo "STAGE=dev" >> $GITHUB_ENV
           else
