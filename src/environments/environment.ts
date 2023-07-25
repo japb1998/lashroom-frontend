@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   log:'debug',
   apiUrl: 'https://938f97v570.execute-api.us-east-1.amazonaws.com/dev',
-  // apiUrl: 'http://localhost:8080'
+  // apiUrl: 'http://localhost:3001'
 };
 
 /*
