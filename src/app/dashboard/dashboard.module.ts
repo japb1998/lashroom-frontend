@@ -14,6 +14,9 @@ import { RouterModule } from '@angular/router';
 import { AddClientComponent } from './components/add-client/add-client.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SingleClientComponent } from './components/single-client/single-client.component';
+import {MatCardModule} from '@angular/material/card';
+
+
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { SingleClientComponent } from './components/single-client/single-client.
     HttpClientModule,
     FormsModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatCardModule,
   ],
   exports: []
 })

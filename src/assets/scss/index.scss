@@ -1,0 +1,17 @@
+@import "material-dashboard.scss";
+
+
+$font-stack: Roboto, sans-serif;
+$primary-color: #EF5350;
+$primary-alt: #EC407A;
+$secondary-color: #29B6F6;
+$secondary-alt:#42A5F5;
+$black: #121212;
+$white: #fff;
+$background: #FAFAFA;
+
+body {
+  font: 100% $font-stack;
+  color: $black;
+  background-color: $background;
+}

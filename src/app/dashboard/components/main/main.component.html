@@ -1,4 +1,21 @@
 <div class="main-dashboard">
-   <app-clients></app-clients>
-   <app-active-notifications></app-active-notifications>
+    <div class="container">
+        <mat-card class="card">
+          <mat-card-content class="card-content">
+            <h4 class="title">Total Clients</h4>
+            <span class="counter">304</span>
+          </mat-card-content>
+          <a mat-flat-button color="basic" routerLink="/dashboard/clients" >Check Clients</a>
+        </mat-card>
+        
+        <mat-card class="card">
+          <mat-card-content class="card-content">
+            <h4 class="title">Notifications</h4>
+            <span class="counter">10</span>
+            <span class="previousCount">Yesterday: 7</span>
+          </mat-card-content>
+          <a mat-flat-button color="link" routerLink="/dashboard/notifications">Check Notifications</a>
+        </mat-card>
+
+    </div>
 </div>

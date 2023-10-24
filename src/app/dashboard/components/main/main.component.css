@@ -1,20 +1,66 @@
 .main-dashboard {
-    display: grid;
-    grid-template-columns: 1fr;
+  
     max-height: 100% - calc(1rem + var(--header-h) * 2);
     max-width: 90%;
     padding: 0.5rem;
     margin: 0 auto var(--header-h) auto
 }
 .dashboard-section {
+    margin-top: 1rem;
     min-width: 45%;
     height:45% ;
 }
 
+.container{
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+  
+}
+
+.card {
+  min-width: 300px;
+  width: auto;
+  height: 300px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;    
+  }
+  
+.card-content {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .counter{
+    margin-top: 1rem;
+    font-size: 36px;
+    font-weight: bold;
+    color: #EF5350; /* You can change the color to your preference */
+  }
+  .previousCount{
+    margin-top: 1rem;
+    font-size: 18px;
+    font-weight: lighter;
+    color: #121212;
+  }
+  a {
+    margin: auto;
+    background-color: #29B6F6; 
+    color: #fafafa/* You can change the color to your preference */
+  }
 @media (max-width: 426px) {
     .main-dashboard {
         margin-top: 1rem .5rem;
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
     }
   }

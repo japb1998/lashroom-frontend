@@ -5,7 +5,8 @@ import { DashboardComponent } from './dashboard.component';
 import { DashBoardMainComponent } from './components/main/main.component';
 import { AddClientComponent } from './components/add-client/add-client.component';
 import { SingleClientComponent } from './components/single-client/single-client.component';
-
+import { ClientsComponent } from './components/clients/clients.component';
+import { ActiveNotificationsComponent } from './components/active-notifications/active-notifications.component';
 const routes: Routes = [
    {
     path: '',
@@ -14,6 +15,14 @@ const routes: Routes = [
       {
         path: '',
         component: DashBoardMainComponent
+      },
+      {
+        path: 'clients',
+        component: ClientsComponent
+      },
+      {
+        path: 'notifications',
+        component: ActiveNotificationsComponent
       },
       {
         path: 'client',
