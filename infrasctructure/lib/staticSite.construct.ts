@@ -1,12 +1,12 @@
 import * as cdk from 'aws-cdk-lib'
-import { Distribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import { Distribution, OriginAccessIdentity, ViewerProtocolPolicy } from 'aws-cdk-lib/aws-cloudfront';
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { Bucket, BucketAccessControl } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import path = require('path');
 
-export class StatisSite extends Construct {
+export class StaticSite extends Construct {
 
     stage: string = process.env.STAGE ?? 'dev';
     bucketName?: string = process.env.PROJECT;
@@ -27,6 +27,7 @@ export class StatisSite extends Construct {
             defaultRootObject: 'index.html',
             defaultBehavior: {
               origin: new S3Origin(bucket, {originAccessIdentity}),
+              viewerProtocolPolicy:  ViewerProtocolPolicy.REDIRECT_TO_HTTPS
             },
             errorResponses: [
                 {
@@ -36,7 +37,6 @@ export class StatisSite extends Construct {
                 }
             ]
         });
-
         new BucketDeployment(this, `${process.env.PROJECT}-BucketDeployment-${this.stage}`, {
             destinationBucket: bucket,
             sources: [Source.asset(path.resolve(__dirname, '../../dist/lashroom-frontend'))],
