@@ -9,19 +9,20 @@ import {
   of
 } from 'rxjs'
 import { environment } from 'src/environments/environment'
-
+import { IClient } from './client.service'
 export interface INewSchedule {
   id?: string
-  email: string
-  phone: string
   deliveryMethods: number[]
-  clientName: string
-  nextNotification: string
+  clientId: string
   date?: string
 }
 
-export interface ISchedule extends INewSchedule {
-  id: string
+export interface ISchedule {
+  id: string,
+  client: IClient,
+  deliveryMethods: number[],
+  clientId: string,
+  date?: string,
 }
 
 @Injectable({
@@ -87,10 +88,7 @@ export class NotificationService {
     }
     new Promise(resolve => {
       this.http
-        .get<{
-          count: number
-          records: INewSchedule[]
-        }>(`${environment.apiUrl}/schedule`, {
+        .get<INewSchedule[]>(`${environment.apiUrl}/schedule`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -101,13 +99,11 @@ export class NotificationService {
               window.location.reload()
             }
             console.error(e)
-            return of({
-              count: 0,
-              records: []
-            })
+            return of([])
           })
         )
-        .subscribe(({ records: schedules }) => {
+        .subscribe((schedules: INewSchedule[]) => {
+          console.log(schedules);
           schedules = schedules?.sort((a, b) =>
             a.date && b.date
               ? new Date(a.date).getDate() < new Date(b.date).getDate()

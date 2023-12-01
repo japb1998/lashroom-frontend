@@ -8,13 +8,14 @@ import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainModule } from './main/main.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AuthInterceptor } from './authentication/interceptor/token.interceptor';
 
 initAmplify()
 
@@ -39,7 +40,13 @@ initAmplify()
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [],
+  providers: [
+    AuthInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useExisting: AuthInterceptor,
+      multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

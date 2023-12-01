@@ -1,7 +1,7 @@
 <div class="scheduler-container">
     <div>
         <h1 style="text-align: center;">
-            Scheduler
+            Client Notification
         </h1>
         <form class="schedule-form" [formGroup]="scheduleFormGroup" (ngSubmit)="onSubmit()">
             <section>
@@ -10,48 +10,19 @@
                         Client Information
                     </h1>
                 </header>
-                <div class="input-div">
-                    <mat-form-field class="input-field">
-                        <mat-label>First Name</mat-label>
-                        <input type="text" matInput placeholder="John" formControlName="firstName">
-                        <mat-error *ngIf="scheduleFormGroup.get('firstName')?.status">
-                            Please enter a valid First Name
-                        </mat-error>
+                <div class="input-div" >
+                    <mat-form-field class="input-field" >
+                        <mat-label>Client</mat-label>
+                        <mat-select formControlName="client"> 
+                            <mat-option *ngFor="let client of (clients$ | async )" [value]="client.id">
+                              {{client.firstName}} {{client.lastName}}
+                            </mat-option>
+                          </mat-select>
                     </mat-form-field>
-                    <mat-form-field class="input-field">
-                        <mat-label>Last Name</mat-label>
-                        <input type="text" matInput placeholder="Doe" formControlName="lastName">
-                        <mat-error *ngIf="scheduleFormGroup.get('lastName')?.status">
-                            Please enter a valid last name
-                        </mat-error>
-                    </mat-form-field>
+
                 </div>
             </section>
-            <section>
-                <header>
-                    <h1>
-                        Contact Information
-                    </h1>
-                </header>
-                <div class="input-div">
-                    <mat-form-field class="input-field">
-                        <mat-label>Email</mat-label>
-                        <input type="text" matInput placeholder="example@gmail.com" formControlName="email">
-                        <mat-error *ngIf="!scheduleFormGroup.get('phoneNumber')?.status">
-                            Please enter a valid email address or Phone Number
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="input-field">
-                        <mat-label>Telephone</mat-label>
-                        <span matPrefix>+1 &nbsp;</span>
-                        <input type="tel" matInput placeholder="+1555 5555 555" formControlName="phoneNumber">
-                        <mat-icon matSuffix>mode_edit</mat-icon>
-                        <mat-error *ngIf="!scheduleFormGroup.get('email')?.status">
-                            Please enter a valid email address or Phone Number
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-            </section>
+          
             <section>
                 <header>
                     <h1>
@@ -59,14 +30,17 @@
                     </h1>
                 </header>
                 <div class="input-div">
-                    <mat-form-field class="input-field">
-                        <mat-label>Send In N Days</mat-label>
-                        <input type="number" matInput placeholder="1" formControlName="numberOfDays" min="1" max="15">
+                        <mat-form-field class="input-field">
+                                <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
 
-                        <mat-error *ngIf="scheduleFormGroup.get('numberOfDays')?.status">
-                            Enter a value between 1 and 15 Days
-                        </mat-error>
                     </mat-form-field>
+                    <mat-form-field class="input-field">
+                        <input matInput type="time" matTooltip="06:00PM" formControlName="time">
+                      </mat-form-field>
                     <div class="notification-methods">
                         <mat-checkbox formControlName="deliverByPhone" >Phone</mat-checkbox>
                         <mat-checkbox formControlName="deliverByEmail" >Email</mat-checkbox>
@@ -75,7 +49,7 @@
             </section>
 
             <div class="input-div submit">
-                <button mat-raised-button color="primary" [disabled]="!scheduleFormGroup.valid || !(scheduleFormGroup.get('deliverByPhone')?.value  || scheduleFormGroup.get('deliverByEmail')?.value)">Create
+                <button mat-raised-button color="primary" >Create
                     
                 </button>
 

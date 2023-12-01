@@ -43,7 +43,6 @@
                     </mat-form-field>
                     <mat-form-field class="input-field">
                         <mat-label>Telephone</mat-label>
-                        <span matPrefix>+1 &nbsp;</span>
                         <input type="tel" matInput placeholder="+1555 5555 555" formControlName="phoneNumber">
                         <mat-icon matSuffix>mode_edit</mat-icon>
                         <mat-error *ngIf="!clientFormGroup.get('email')?.status">

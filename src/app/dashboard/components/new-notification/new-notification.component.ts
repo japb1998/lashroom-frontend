@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core'
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
+import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { SnackBarComponent } from '../../../snack-bar/snack-bar.component'
-import { map, of, switchMap } from 'rxjs'
+import { BehaviorSubject, filter, map, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { INewSchedule, NotificationService } from '../../notification.service'
-import { ClientService } from '../../client.service'
+import { ClientService, IClient } from '../../client.service'
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-new-notification',
@@ -14,6 +15,10 @@ import { ClientService } from '../../client.service'
 })
 export class NewNotificationComponent implements OnInit {
   validContact!: boolean
+  clients$!: Observable<IClient[]>;
+  destroy$: Subject<boolean> = new Subject();
+  notificationDate: Date = new Date();
+
   constructor (
     private notificationService: NotificationService,
     private clientService: ClientService,
@@ -22,33 +27,23 @@ export class NewNotificationComponent implements OnInit {
     private activeRouting: ActivatedRoute
   ) {
     this.scheduleFormGroup.valueChanges.subscribe(v => {
-      this.validContact = this.validate()
+      let date: Date = this.scheduleFormGroup.get('time')?.value;
     })
+  
   }
 
   scheduleFormGroup = new UntypedFormGroup({
-    firstName: new UntypedFormControl('', {
-      validators: [Validators.required, Validators.minLength(2)]
-    }),
-    lastName: new UntypedFormControl('', {
-      validators: [Validators.required, Validators.minLength(2)]
-    }),
-    email: new UntypedFormControl('', {
-      validators: [Validators.email]
-    }),
-    phoneNumber: new UntypedFormControl('', {
-      validators: [Validators.pattern(/^[0-9]{10}$/)]
-    }),
-    numberOfDays: new UntypedFormControl('', {
-      validators: [Validators.required, Validators.min(1), Validators.max(15)]
-    }),
-    phone: new UntypedFormControl(false, {
+    client: new FormControl('', {validators: [Validators.required]} ),
+    date: new FormControl(new Date(), {
       validators: [Validators.required]
     }),
-    deliverByPhone: new UntypedFormControl(false, {
+    time: new FormControl(null, {
+      validators: [Validators.required]
+    }), 
+    deliverByPhone: new FormControl(false, {
       validators: [Validators.required]
     }),
-    deliverByEmail: new UntypedFormControl(false, {
+    deliverByEmail: new FormControl(false, {
       validators: [Validators.required]
     })
   })
@@ -70,71 +65,39 @@ export class NewNotificationComponent implements OnInit {
           const client = await this.clientService.getSingleClient(id)
 
           this.scheduleFormGroup.patchValue({
-            firstName:
-              client.clientName?.split(' ')?.length > 1
-                ? client.clientName?.split(' ')[0]
-                : '',
+            firstName: client.firstName,
             lastName:
-              client.clientName?.split(' ')?.length > 1
-                ? client.clientName.split(' ')[1]
-                : '',
+              client.lastName,
             email: client.email ?? '',
             phoneNumber: client.phone ?? ''
           })
         }
       })
-  }
-  validate () {
-    const phone = this.scheduleFormGroup.get('phoneNumber');
-    const email = this.scheduleFormGroup.get('email');
 
-    if (email?.value && email.valid && phone?.value && phone.valid) {
-      phone.setErrors(null)
-      email.setErrors(null)
-
-      return true
-    } else if (
-      phone?.touched &&
-      !phone.value.length &&
-      !email?.value.length &&
-      email?.touched
-    ) {
-      phone.setErrors({ specificFieldsInvalid: true })
-      email.setErrors({ specificFieldsInvalid: true })
-      return false
-    } else if (email?.value && email.valid) {
-      if (phone?.value) {
-        phone.setErrors({ specificFieldsInvalid: true })
-      }
-      return false
-    } else if (phone?.value && phone.valid) {
-      if (email?.value) email?.setErrors({ specificFieldsInvalid: true })
-    } else if (!phone?.value?.length && !email?.value?.length) {
-      email?.setErrors({ specificFieldsInvalid: true })
-      phone?.setErrors({ specificFieldsInvalid: true })
-      return false
-    }
-    if (/^[0-9]{10}$/.test(phone?.value) || !phone?.value.length) {
-      phone?.setErrors(null)
-    }
-    if (
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email?.value) ||
-      !email?.value.length
-    ) {
-      email?.setErrors(null)
-    }
-    return true
+      this.clients$ = this.clientService.$clientList.pipe(takeUntil(this.destroy$), map((list) => list.filter(c => c.optIn)))
   }
 
   onSubmit () {
+    let date: Date = this.scheduleFormGroup.get('date')?.value;
+    const [hrs, minutes] = this.scheduleFormGroup.get('time')?.value.split(':')
+    let iso: string;
+    // check
+    if (!isNaN(Number(hrs)) && !isNaN(Number(minutes))) {
+      date.setHours(Number(hrs), Number(minutes))
+      iso = date.toISOString();
+      
+    } else {
+      this.scheduleFormGroup.get('time')?.setErrors({
+        hour: 'not a number',
+        minutes: 'not a number'
+      })
+      return;
+    }
+
     const schedule: INewSchedule = {
-      clientName: `${this.scheduleFormGroup.get('firstName')?.value} ${
-        this.scheduleFormGroup.get('lastName')?.value
-      }`,
-      email: this.scheduleFormGroup.get('email')?.value,
-      phone: this.scheduleFormGroup.get('phoneNumber')?.value,
-      nextNotification: this.scheduleFormGroup.get('numberOfDays')?.value,
-      deliveryMethods: []
+      deliveryMethods: [],
+      date: iso,
+      clientId: this.scheduleFormGroup.get('client')?.value
     }
     if (this.scheduleFormGroup.get('deliverByEmail')?.value) {
       schedule.deliveryMethods.push(1)
@@ -156,5 +119,9 @@ export class NewNotificationComponent implements OnInit {
     this._snackBar.openFromComponent(SnackBarComponent, {
       duration: 2000
     })
+  }
+
+  onDestroy() {
+    this.destroy$.next(true);
   }
 }

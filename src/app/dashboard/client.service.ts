@@ -11,12 +11,17 @@ import {
 import { environment } from 'src/environments/environment'
 
 export interface IClient {
-  clientName: string
+  firstName: string;
+  lastName: string;
   phone: string
   email: string
   id: string
   description?: string
+  createdAt?: string;
+  lastUpdatedAt?: string;
+  optIn: boolean;
 }
+
 
 export interface INewClient extends Partial<IClient> {}
 
@@ -41,10 +46,6 @@ export class ClientService {
     return this.#clientList.getValue()
   }
 
-
-
- 
-
   async getIClients () {
     const token = this.tokenId ?? (await this.getTokenId())
 
@@ -54,26 +55,20 @@ export class ClientService {
     new Promise(resolve => {
       this.http
         .get<{
-          count: number
-          records: IClient[]
-        }>(`${environment.apiUrl}/clients`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+          count: number;
+          data: IClient[]
+        }>(`${environment.apiUrl}/clients`)
         .pipe(
           catchError(e => {
-            if (e?.status && e.status == 401) {
-              window.location.reload()
-            }
+
             console.error(e)
             return of({
               count: 0,
-              records: []
+              data: []
             })
           })
         )
-        .subscribe(({ records: clients }) => {
+        .subscribe(({ data: clients }) => {
           this.clientList = clients
           resolve(this.clientList)
         })
@@ -130,11 +125,7 @@ export class ClientService {
 
     try {
       await lastValueFrom(
-        this.http.delete<void>(`${environment.apiUrl}/clients/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+        this.http.delete<void>(`${environment.apiUrl}/clients/${id}`)
       );
       this.clientList = this.clientList.filter(c => c.id !== id)
     } catch {
