@@ -25,16 +25,15 @@ export class AddClientComponent {
       validators: [Validators.email]
     }),
     phoneNumber: new UntypedFormControl('', {
-      validators: [Validators.pattern(/^[0-9]{10}$/)]
+      validators: [Validators.pattern(/^\+[0-9]{1,2}[0-9]{10}$/)]
     }),
     description: new UntypedFormControl('')
   });
 
   async onSubmit() {
     const newClient: INewClient = {
-      clientName: `${this.clientFormGroup.get('firstName')?.value} ${
-        this.clientFormGroup.get('lastName')?.value
-      }`,
+      firstName: this.clientFormGroup.get('firstName')?.value,
+      lastName: this.clientFormGroup.get('lastName')?.value,
       phone: this.clientFormGroup.get('phoneNumber')?.value,
       email: this.clientFormGroup.get('email')?.value,
       description: this.clientFormGroup.get('description')?.value

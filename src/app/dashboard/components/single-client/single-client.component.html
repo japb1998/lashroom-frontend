@@ -5,8 +5,12 @@
         <h1 style="text-align: center;">
             Client View
         </h1>
-        <section style="width: 60vw; margin: 0 auto; display: flex; gap: 1rem; align-items: center;justify-content: space-between;">
-            <mat-slide-toggle [formControl]="isEditable" ><span style="font-weight: bolder;">Edit Mode: {{ isEditable.value ? 'on' : 'off'}}</span></mat-slide-toggle> <span matTooltip="delete client" style="cursor: pointer;" (click)="deleteClient()"><fa-icon [icon]="faTrashCan" style="color: rgb(180, 26, 26)" size="xl"></fa-icon> </span>
+        <section
+            style="width: 60vw; margin: 0 auto; display: flex; gap: 1rem; align-items: center;justify-content: space-between;">
+            <mat-slide-toggle [formControl]="isEditable"><span style="font-weight: bolder;">Edit Mode: {{
+                    isEditable.value ? 'on' : 'off'}}</span></mat-slide-toggle> <span matTooltip="delete client"
+                style="cursor: pointer;" (click)="deleteClient()"><fa-icon [icon]="faTrashCan"
+                    style="color: rgb(180, 26, 26)" size="xl"></fa-icon> </span>
         </section>
         <form class="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
             <section>
@@ -49,13 +53,24 @@
                     </mat-form-field>
                     <mat-form-field class="input-field">
                         <mat-label>Telephone</mat-label>
-                        <span matPrefix>+1 &nbsp;</span>
+
                         <input type="tel" matInput placeholder="+1555 5555 555" formControlName="phoneNumber">
                         <mat-icon matSuffix>mode_edit</mat-icon>
                         <mat-error *ngIf="!clientFormGroup.get('email')?.status">
                             Please enter a valid email address or Phone Number
                         </mat-error>
                     </mat-form-field>
+                </div>
+            </section>
+            <section>
+                <header>
+                    <h1>
+                        Notifications Settings
+                    </h1>
+                </header>
+                <div class="input-div">
+        
+                        <mat-slide-toggle formControlName="optIn"></mat-slide-toggle>
                 </div>
             </section>
             <section>
@@ -75,10 +90,7 @@
                 <button mat-raised-button color="primary" [disabled]="!clientFormGroup.valid">Update
 
                 </button>
-
             </div>
-
-
         </form>
     </div>
 </div>

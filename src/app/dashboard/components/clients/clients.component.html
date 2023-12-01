@@ -22,7 +22,7 @@
 
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['client', element.id]" class="client-name">{{ isMobile ? (element.clientName?.length > 20 ? element.clientName?.slice(0, 20) + '...' : element.clientName) : element.clientName }}</td>
+        <td mat-cell *matCellDef="let element" [routerLink]="['client', element.id]" class="client-name">{{ isMobile ? ((element.firstName + " " +element.lastName).length > 20 ? (element.firstName + " " + element.lastName)?.slice(0, 20) + '...' : (element.firstName + " " + element.lastName)) : (element.firstName + " " + element.lastName) }}</td>
       </ng-container>
 
 

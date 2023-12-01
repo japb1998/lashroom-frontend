@@ -21,7 +21,7 @@ export class ClientsComponent implements OnInit {
   filteredList: IClient[] = []
   paginatedList: IClient[] = []
   resultsLength = this.clientList.length
-  isLoading: boolean
+  isLoading: boolean = false;
   faUsers = faUsersLine
   searchTerm: FormControl = new FormControl('');
   isMobile = false;
@@ -37,18 +37,14 @@ export class ClientsComponent implements OnInit {
     })
   }
 
-  constructor (private clientService: ClientService) {
-    this.isLoading = true
-
-    this.clientService.getIClients().finally(() => {
-      this.isLoading = false
-    })
-  }
+  constructor (private clientService: ClientService) { }
 
   ngOnInit (): void {
-    this._clientListSub = this.clientService.$clientList.subscribe(c => {
+    this.isLoading = true;
+    this._clientListSub = this.clientService.$clientList.pipe(tap((c) => {
+      this.isLoading = false;
       this.clientList = c.sort((a, b) =>
-        a.clientName.trim() < b.clientName.trim() ? -1 : 1
+        a.lastName.trim() < b.lastName.trim() ? -1 : 1
       )
       this.filteredList = this.clientList
       this.resultsLength = this.clientList.length
@@ -56,17 +52,17 @@ export class ClientsComponent implements OnInit {
         (this.paginator?.pageIndex ?? 0) * 10,
         ((this.paginator?.pageIndex ?? 0) + 1) * 10
       )
-    })
+    })).subscribe()
 
     this._searchTermSub = this.searchTerm.valueChanges.subscribe(term => {
       this.paginator.firstPage()
       this.filteredList = this.clientList
-        .filter(c =>
-          term
-            ? c.clientName.toUpperCase().trim().startsWith(term.toUpperCase())
-            : this.clientList
+        .filter(c => (
+          c.firstName.toUpperCase().trim().startsWith(term.toUpperCase()) || 
+          c.lastName.toUpperCase().trim().startsWith(term.toUpperCase())
         )
-        .sort((a, b) => (a.clientName.trim() < b.clientName.trim() ? -1 : 1))
+        )
+        .sort((a, b) => (a.lastName.trim() < b.lastName.trim() ? -1 : 1))
       this.resultsLength = this.filteredList.length
       this.paginatedList = this.filteredList.slice(
         (this.paginator?.pageIndex ?? 0) * 10,

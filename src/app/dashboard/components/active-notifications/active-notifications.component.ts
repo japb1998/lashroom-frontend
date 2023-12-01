@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, pipe, Subject, Subscription, takeUntil, tap } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faEnvelope, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { INewSchedule, NotificationService } from '../../notification.service';
@@ -16,20 +16,15 @@ export class ActiveNotificationsComponent implements OnInit {
   notificationFilteredList: INewSchedule[] = [];
   notificationResultLenght = 0;
   _notificationListSub!:Subscription;
-  isLoading:boolean;
-  faEnvelope = faEnvelope
-  faTrashCan = faTrashCan
+  isLoading!:boolean;
+  destroy$: Subject<boolean>  = new Subject();
+  faEnvelope = faEnvelope;
+  faTrashCan = faTrashCan;
+
   constructor(
     private notificationService: NotificationService, 
     private _snackBar: MatSnackBar,
-    ) {
-
-    this.isLoading = true;
-
-    this.notificationService.getNotifications().finally(() => {
-      this.isLoading = false
-    })
-  }
+    ) {}
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
@@ -40,8 +35,8 @@ export class ActiveNotificationsComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this._notificationListSub = this.notificationService.$notificationList.subscribe((n) => {
-      
+    this.isLoading = true;
+    this._notificationListSub = this.notificationService.$notificationList.pipe(takeUntil(this.destroy$), tap(() => { this.isLoading = false })).subscribe((n) => {
       this.notificationList = n    
       this.notificationResultLenght = this.notificationList.length
       this.notificationFilteredList = this.notificationList.slice((this.paginator?.pageIndex * 10 ), (this.paginator?.pageIndex + 1 )*10)
@@ -61,7 +56,8 @@ export class ActiveNotificationsComponent implements OnInit {
   }
   ngOnDestroy(): void {
  
-    if (this._notificationListSub)this._notificationListSub.unsubscribe()
+    if (this._notificationListSub)this._notificationListSub.unsubscribe();
+    this.destroy$.next(true);
     
   }
 
