@@ -26,10 +26,7 @@ export class NewNotificationComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private activeRouting: ActivatedRoute
   ) {
-    this.scheduleFormGroup.valueChanges.subscribe(v => {
-      let date: Date = this.scheduleFormGroup.get('time')?.value;
-    })
-  
+    this.clients$ = this.clientService.$paginatedClients.pipe(takeUntil(this.destroy$), map((list) => list.data.filter(c => c.optIn)))
   }
 
   scheduleFormGroup = new UntypedFormGroup({
@@ -51,30 +48,28 @@ export class NewNotificationComponent implements OnInit {
   ngOnInit (): void {
     this.activeRouting.params
       .pipe(
-        switchMap(({ id }) => {
+        map(({ id }) => {
           if (id) {
-            return of(id)
+            return id
           } else {
-            return of(undefined)
+            return undefined
           }
-        })
+        }),
+        filter((id) => !!id),
+        takeUntil(this.destroy$)
       )
       .subscribe(async (id) => {
-        if (id) {
+          try {
 
-          const client = await this.clientService.getSingleClient(id)
+            await this.clientService.getSingleClient(id); //client exist
 
-          this.scheduleFormGroup.patchValue({
-            firstName: client.firstName,
-            lastName:
-              client.lastName,
-            email: client.email ?? '',
-            phoneNumber: client.phone ?? ''
-          })
-        }
+            this.scheduleFormGroup.patchValue({
+              client: id
+            })
+          } catch(e ) {
+            console.error(`could not get client ID=${id}`)
+          }
       })
-
-      this.clients$ = this.clientService.$clientList.pipe(takeUntil(this.destroy$), map((list) => list.filter(c => c.optIn)))
   }
 
   onSubmit () {
