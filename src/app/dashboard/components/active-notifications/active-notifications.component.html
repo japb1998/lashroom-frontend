@@ -2,8 +2,8 @@
   <h2 style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem"><span> Active
       Notifications </span> <fa-icon [icon]="faEnvelope" style="color: #4d4d4d"></fa-icon></h2>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
-    <table mat-table [dataSource]="notificationFilteredList" style="width: 100%"
-      *ngIf="notificationResultLenght; else noClient">
+    <table mat-table [dataSource]="(notificationList$ | async)!" style="width: 100%"
+      *ngIf="notificationListLenght$ | async ; else noClient">
 
 
       <ng-container matColumnDef="Name">
@@ -40,8 +40,8 @@
   <ng-template #loading>
     <div style="width: 100%; display: flex; justify-content: center; padding: 2rem;"> <mat-spinner></mat-spinner></div>
   </ng-template>
-  <mat-paginator [length]="notificationResultLenght" [pageSize]="10" [showFirstLastButtons]="true"
-    [pageSizeOptions]="[10]" aria-label="Select page of Employees search results"></mat-paginator>
+  <mat-paginator [length]="notificationListLenght$ | async" [pageSize]="10" [showFirstLastButtons]="true"
+    [pageSizeOptions]="[5, 10]" aria-label="Select page of Employees search results"></mat-paginator>
 
   <ng-template #noClient>
     <h4 style="text-align: center;">No Active Notifications</h4>

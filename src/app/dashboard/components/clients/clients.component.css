@@ -14,6 +14,10 @@
 .pointer:hover {
     cursor: pointer;
 }
+.disabled {
+    color: rgb(214, 214, 214);
+    cursor: not-allowed;
+}
 @media (max-width: 450px) {
     .hide-mobile > td {
         display: hidden;

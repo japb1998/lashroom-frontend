@@ -1,187 +1,196 @@
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Auth } from 'aws-amplify'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Auth } from 'aws-amplify';
 import {
   BehaviorSubject,
   Observable,
   catchError,
   lastValueFrom,
-  of
-} from 'rxjs'
-import { environment } from 'src/environments/environment'
-import { IClient } from './client.service'
+  of,
+  map,
+} from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { IClient } from './client.service';
 export interface INewSchedule {
-  id?: string
-  deliveryMethods: number[]
-  clientId: string
-  date?: string
+  id?: string;
+  deliveryMethods: number[];
+  clientId: string;
+  date?: string;
 }
 
 export interface ISchedule {
-  id: string,
-  client: IClient,
-  deliveryMethods: number[],
-  clientId: string,
-  date?: string,
+  id: string;
+  client: IClient;
+  deliveryMethods: number[];
+  clientId: string;
+  date?: string;
+}
+
+export interface IPaginatedNotifications {
+  limit: number;
+  page: number;
+  total: number;
+  data: ISchedule[];
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-  tokenId?: string
+  tokenId?: string;
 
-  #notificationList: BehaviorSubject<INewSchedule[]> = new BehaviorSubject(
-    [] as INewSchedule[]
-  )
+  #paginatedNotifications: BehaviorSubject<IPaginatedNotifications> = new BehaviorSubject(
+    {} as IPaginatedNotifications
+  );
+  
+  readonly $paginatedNotifications: Observable<IPaginatedNotifications> =
+    this.#paginatedNotifications.asObservable();
 
-  readonly $notificationList: Observable<INewSchedule[]> =
-    this.#notificationList.asObservable()
+  constructor(private http: HttpClient) {}
 
-  constructor (private http: HttpClient) {}
-
-  set notificationList (notifications: INewSchedule[]) {
-    this.#notificationList.next(notifications)
+  set paginatedNotifications(notifications: IPaginatedNotifications) {
+    this.#paginatedNotifications.next(notifications);
   }
 
-  get notificationList (): INewSchedule[] {
-    return this.#notificationList.getValue()
+  get paginatedNotifications(): IPaginatedNotifications {
+    return this.#paginatedNotifications.getValue();
   }
 
-  async getTokenId () {
+  async getTokenId() {
     return await Auth.currentSession()
-      .then(u => {
-        this.tokenId = u.getIdToken().getJwtToken()
-        return this.tokenId
+      .then((u) => {
+        this.tokenId = u.getIdToken().getJwtToken();
+        return this.tokenId;
       })
       .catch(() => {
-        this.tokenId = undefined
-        return this.tokenId
-      })
+        this.tokenId = undefined;
+        return this.tokenId;
+      });
   }
 
-  async createNewSchedule (newSchedule: INewSchedule): Promise<void> {
-    const token = this.tokenId ?? (await this.getTokenId())
+  async createNewSchedule(newSchedule: INewSchedule): Promise<void> {
+    const token = this.tokenId ?? (await this.getTokenId());
 
     if (!token) {
-      window.location.href = '/login'
+      window.location.href = '/login';
     }
 
     try {
       await lastValueFrom(
         this.http.post(`${environment.apiUrl}/schedule`, newSchedule, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         })
-      )
+      );
     } catch {
-      throw new Error('Failed To Create Schedule')
+      throw new Error('Failed To Create Schedule');
     }
   }
 
-  async getNotifications () {
-    const token = this.tokenId ?? (await this.getTokenId())
+  async getNotifications(page = 0, limit = 10) {
+    const token = this.tokenId ?? (await this.getTokenId());
 
     if (!token) {
-      window.location.href = '/login'
+      window.location.href = '/login';
     }
-    new Promise(resolve => {
-      this.http
-        .get<INewSchedule[]>(`${environment.apiUrl}/schedule`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+
+    return this.http
+      .get<IPaginatedNotifications>(`${environment.apiUrl}/schedule`, {
+        params: {
+          page,
+          limit,
+        },
+      })
+      .pipe(
+        catchError((e) => {
+          if (e?.status && e.status == 401) {
+            window.location.href = 'login';
           }
-        })
-        .pipe(
-          catchError(e => {
-            if (e?.status && e.status == 401) {
-              window.location.reload()
-            }
-            console.error(e)
-            return of([])
-          })
-        )
-        .subscribe((schedules: INewSchedule[]) => {
-          console.log(schedules);
+          console.error(e);
+          return of({} as IPaginatedNotifications);
+        }),
+        map((paginatedN: IPaginatedNotifications) => {
+          let schedules = paginatedN.data;
           schedules = schedules?.sort((a, b) =>
             a.date && b.date
               ? new Date(a.date).getDate() < new Date(b.date).getDate()
                 ? -1
                 : 1
               : 0
-          )
-          this.notificationList = schedules.map(s => {
-            const date = s.date ? new Date(s.date).toLocaleDateString() : ''
+          );
+          return paginatedN;
+        }),
+        map((paginatedN: IPaginatedNotifications) => {
+          paginatedN.data = paginatedN.data.map((s) => {
+            const date = s.date ? new Date(s.date).toLocaleDateString() : '';
             return {
               ...s,
-              date: date.split('GMT')[0]
-            }
-          })
-
-          resolve(this.notificationList)
+              date: date.split('GMT')[0],
+            };
+          });
+          this.paginatedNotifications = paginatedN
         })
-    })
+      );
   }
 
-  async getNotificationById (id: string) {
-    const token = this.tokenId ?? (await this.getTokenId())
+  async getNotificationById(id: string) {
+    const token = this.tokenId ?? (await this.getTokenId());
 
     if (!token) {
-      window.location.href = '/login'
+      window.location.href = '/login';
     }
-    new Promise(resolve => {
+    new Promise((resolve) => {
       this.http
         .get<ISchedule>(`${environment.apiUrl}/schedule/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         })
         .pipe(
-          catchError(e => {
+          catchError((e) => {
             if (e?.status && e.status == 401) {
-              window.location.reload()
+              window.location.href = '/login';
             }
-            console.error(e)
-            return of(undefined)
+            console.error(e);
+            return of(undefined);
           })
         )
         .subscribe((notification?: ISchedule) => {
-          resolve(notification)
-        })
-    })
+          resolve(notification);
+        });
+    });
   }
 
   async removeNotification(id: string) {
-    const token = this.tokenId ?? (await this.getTokenId())
+    const token = this.tokenId ?? (await this.getTokenId());
 
     if (!token) {
-      window.location.href = '/login'
+      window.location.href = '/login';
     }
 
-    new Promise(resolve => {
+    new Promise((resolve) => {
       this.http
         .delete<void>(`${environment.apiUrl}/schedule/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         })
         .pipe(
-          catchError(e => {
+          catchError((e) => {
             if (e?.status && e.status == 401) {
-              window.location.reload()
+              window.location.reload();
             }
-            console.error(e)
-            return of(undefined)
+            console.error(e);
+            return of(undefined);
           })
         )
         .subscribe((_void) => {
-
           if (_void !== undefined) {
-            this.notificationList = this.notificationList.filter(n => n.id !== id)
+            this.getNotifications(this.paginatedNotifications.page, this.paginatedNotifications.limit).then(s => s.subscribe());
           }
-            resolve(1)
-        })
-    })
+          resolve(1);
+        });
+    });
   }
 }
