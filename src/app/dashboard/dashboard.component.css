@@ -2,6 +2,8 @@
     padding: var(--header-h) 0;
     overflow: scroll;
     width: 100%;
+    max-width: 1440px;
+    margin: 0 auto
 }
 *::-webkit-scrollbar {
     display: none;
