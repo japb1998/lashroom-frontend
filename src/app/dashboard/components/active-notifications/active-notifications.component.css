@@ -1,0 +1,12 @@
+.status {
+    width: 20px;
+    height: 20px;
+    background-color: #ee204d;
+    display: block;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.sent {
+    background-color: #1cac78
+}

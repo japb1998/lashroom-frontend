@@ -11,6 +11,11 @@ import {
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IClient } from './client.service';
+
+export enum ENotificationStatus {
+  SENT = 'SENT',
+  NOT_SENT = 'NOT_SENT'
+}
 export interface INewSchedule {
   id?: string;
   deliveryMethods: number[];
@@ -24,6 +29,7 @@ export interface ISchedule {
   deliveryMethods: number[];
   clientId: string;
   date?: string;
+  status: ENotificationStatus
 }
 
 export interface IPaginatedNotifications {

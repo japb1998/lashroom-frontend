@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, map, Observable, of, pipe, Subject, Subscription, take, takeUntil, tap } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faEnvelope, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { INewSchedule, ISchedule, NotificationService } from '../../notification.service';
+import { ENotificationStatus, INewSchedule, ISchedule, NotificationService } from '../../notification.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-active-notifications',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./active-notifications.component.css']
 })
 export class ActiveNotificationsComponent implements OnInit {
-  displayedColumns: string[] = ['Name', 'Phone', 'Email', 'Date', 'Actions'];
+  displayedColumns: string[] = ['Name', 'Phone', 'Email', 'Date', 'Actions', 'Status'];
   isLoading!:boolean;
   destroy$: Subject<boolean>  = new Subject();
   faEnvelope = faEnvelope;
@@ -54,6 +55,16 @@ export class ActiveNotificationsComponent implements OnInit {
         this._snackBar.open('Successfully deleted notification', 'x')
       }
     )
+  }
+  protected statusColor(status: ENotificationStatus) {
+      switch(status) {
+          case ENotificationStatus.NOT_SENT: {
+            return false
+          }
+          case ENotificationStatus.SENT: {
+              return true
+          }
+      }
   }
   ngOnDestroy(): void {
  
