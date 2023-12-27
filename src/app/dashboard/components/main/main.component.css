@@ -4,6 +4,7 @@
     max-height: 100% - calc(1rem + var(--header-h) * 2);
     max-width: 90%;
     padding: 0.5rem;
+    row-gap: 2rem;
     margin: 0 auto var(--header-h) auto
 }
 .dashboard-section {
