@@ -21,7 +21,6 @@ export class ClientsComponent implements OnInit {
   isLoading: boolean = false;
   faUsers = faUsersLine
   searchTerm: FormControl = new FormControl('');
-  isMobile = false;
   clientList$!: Observable<IClient[]>;
   clientListLength$!: Observable<number>;
   destroy$ = new Subject<boolean>();
@@ -46,17 +45,9 @@ export class ClientsComponent implements OnInit {
     this._searchTermSub = this.searchTerm.valueChanges.pipe(tap(() => this.paginator.firstPage()), switchMap((term) => this.clientService.getIClients(0, 10, {
       firstName: term,
       lastName: term,
-    })), debounce(i => interval(500))).subscribe(term => {
-    });
-
-    if (window.screen.width <= 450) {
-      this.isMobile = true;
-    }
+    })), debounce(i => interval(500))).subscribe();
   }
-  getDisplayedColumns() {
-    return this.isMobile ? ['Name', 'Schedule'] :  this.displayedColumns;
-  }
-
+  
   toDaysCount(date: string): string {
     return toDaysCount(date)
   }

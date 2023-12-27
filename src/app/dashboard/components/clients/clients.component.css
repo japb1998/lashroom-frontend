@@ -18,7 +18,13 @@
     color: rgb(214, 214, 214);
     cursor: not-allowed;
 }
+.overflow-container {
+    overflow: scroll;
+    max-width: 90vw;
+    max-height: 50vh;
+}
 @media (max-width: 450px) {
+    
     .hide-mobile > td {
         display: hidden;
     }

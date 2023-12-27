@@ -18,26 +18,27 @@
     </form>
   </div>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
-    <table mat-table [dataSource]="(clientList$|async)!" style="width: 90%" *ngIf="(clientListLength$ | async)! > 0; else noClient">
+    <div class="overflow-container">
+    <table  mat-table [dataSource]="(clientList$|async)!" *ngIf="(clientListLength$ | async)! > 0; else noClient">
 
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element" [routerLink]="['client', element.id]" class="client-name">{{ isMobile ? ((element.firstName + " " +element.lastName).length > 20 ? (element.firstName + " " + element.lastName)?.slice(0, 20) + '...' : (element.firstName + " " + element.lastName)) : (element.firstName + " " + element.lastName) }}</td>
+        <td mat-cell *matCellDef="let element" [routerLink]="['client', element.id]" class="client-name">{{element.firstName}} {{element.lastName}}</td>
       </ng-container>
 
 
-      <ng-container matColumnDef="Phone" *ngIf="!isMobile">
+      <ng-container matColumnDef="Phone">
         <th mat-header-cell *matHeaderCellDef>Phone</th>
         <td mat-cell *matCellDef="let element">{{ element?.phone || '-' }}</td>
       </ng-container>
 
 
-      <ng-container matColumnDef="Email" *ngIf="!isMobile">
+      <ng-container matColumnDef="Email">
         <th mat-header-cell *matHeaderCellDef>Email</th>
         <td mat-cell *matCellDef="let element">{{ element?.email || '-' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="LastSeen" *ngIf="!isMobile">
+      <ng-container matColumnDef="LastSeen">
         <th mat-header-cell *matHeaderCellDef>Visited</th>
         <td mat-cell *matCellDef="let element" [matTooltip]="toDaysCount(element?.lastSeen)">{{ (element?.lastSeen | date: 'short') || 'No visits' }}</td>
       </ng-container>
@@ -59,14 +60,15 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
-      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+  </div>
   </ng-template>
   <ng-template #loading>
     <div style="width: 100%; display: flex; justify-content: center; padding: 2rem;"> <mat-spinner></mat-spinner></div>
   </ng-template>
-  <mat-paginator [length]="(clientListLength$ | async)!" [pageSize]="10" [showFirstLastButtons]="true" [pageSizeOptions]="[100, 20, 10, 5]"
+  <mat-paginator style="max-width: 90vw;" [length]="(clientListLength$ | async)!" [pageSize]="10" [showFirstLastButtons]="true" [pageSizeOptions]="[100, 20, 10, 5]"
     aria-label="Select page of Employees search results"
     aria-label="Select page of Employees search results"></mat-paginator>
 

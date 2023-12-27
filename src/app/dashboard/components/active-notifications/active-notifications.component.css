@@ -7,6 +7,11 @@
     /* margin: 0 auto; */
 }
 
+.overflow-container {
+    overflow: scroll;
+    max-width: 90vw;
+    max-height: 50vh;
+}
 .sent {
     background-color: #1cac78
 }
