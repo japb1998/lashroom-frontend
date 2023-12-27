@@ -32,7 +32,7 @@ export class SingleClientComponent {
 
   ngOnInit() {
     this._editableSub = this.isEditable.valueChanges.subscribe((v) => {
-      this.toggleEdit(v);
+      this.toggleEdit(!!v);
     });
 
     this.activeRouting.params
@@ -62,9 +62,9 @@ export class SingleClientComponent {
                 email: client.email ?? '',
                 phoneNumber: client.phone ?? '',
                 description: client.description,
-                optIn: client.optIn
+                optIn: client.optIn,
+                lastSeen: client.lastSeen
               });
-
             }
           });
         })
@@ -72,23 +72,24 @@ export class SingleClientComponent {
       .subscribe();
   }
   clientFormGroup = new UntypedFormGroup({
-    firstName: new UntypedFormControl('', {
+    firstName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)],
     }),
-    lastName: new UntypedFormControl('', {
+    lastName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)],
     }),
-    email: new UntypedFormControl('', {
+    email: new FormControl('', {
       validators: [Validators.email],
     }),
-    phoneNumber: new UntypedFormControl('', {
+    phoneNumber: new FormControl('', {
       validators: [Validators.pattern(/^\+[0-9]{1,2}[0-9]{10}$/)],
     }),
     optIn: new FormControl(false, { validators: [Validators.required]}),
-    description: new UntypedFormControl(''),
+    description: new FormControl(''),
+    lastSeen: new FormControl(new Date(), { validators: [Validators.required]})
   });
 
-  isEditable = new UntypedFormControl(false);
+  isEditable = new FormControl(false);
 
   async onSubmit() {
     const newClient: IClient = {
@@ -99,6 +100,7 @@ export class SingleClientComponent {
       email: this.clientFormGroup.get('email')?.value,
       description: this.clientFormGroup.get('description')?.value,
       optIn: this.clientFormGroup.get('optIn')?.value,
+      lastSeen: this.clientFormGroup.get('lastSeen')?.value.toISOString()
     };
 
     this.clientService

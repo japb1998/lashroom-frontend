@@ -20,6 +20,7 @@ export interface IClient {
   description?: string;
   createdAt?: string;
   lastUpdatedAt?: string;
+  lastSeen?:string;
   optIn: boolean;
 }
 
@@ -71,6 +72,7 @@ export class ClientService {
           });
         }),
         tap((paginated) => {
+          paginated.data = paginated.data.map(d => ({...d, lastSeen: d.lastSeen ? new Date(d.lastSeen).toLocaleString(): undefined }))
           this.paginatedClients = paginated;
         })
       );

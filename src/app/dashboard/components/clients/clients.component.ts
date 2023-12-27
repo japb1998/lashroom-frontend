@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms'
 import { faUsersLine, faX } from '@fortawesome/free-solid-svg-icons'
 import { faClock, faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { ClientService, IClient } from '../../client.service'
+import { toDaysCount } from 'src/app/utils'
 
 @Component({
   selector: 'app-clients',
@@ -12,7 +13,7 @@ import { ClientService, IClient } from '../../client.service'
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
-  displayedColumns: string[] = ['Name', 'Phone', 'Email', 'Schedule']
+  displayedColumns: string[] = ['Name', 'Phone', 'Email', 'LastSeen','Schedule']
   faClock = faClock
   faPen = faPenToSquare
   faX = faX
@@ -55,6 +56,11 @@ export class ClientsComponent implements OnInit {
   getDisplayedColumns() {
     return this.isMobile ? ['Name', 'Schedule'] :  this.displayedColumns;
   }
+
+  toDaysCount(date: string): string {
+    return toDaysCount(date)
+  }
+
   ngOnDestroy () {
     this.destroy$.next(true)
     if (this._searchTermSub) {

@@ -11,7 +11,7 @@ import {
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IClient } from './client.service';
-
+import { toDaysCount } from '../utils';
 export enum ENotificationStatus {
   SENT = 'SENT',
   NOT_SENT = 'NOT_SENT'
@@ -83,11 +83,7 @@ export class NotificationService {
 
     try {
       await lastValueFrom(
-        this.http.post(`${environment.apiUrl}/schedule`, newSchedule, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        this.http.post(`${environment.apiUrl}/schedule`, newSchedule)
       );
     } catch {
       throw new Error('Failed To Create Schedule');
@@ -128,13 +124,7 @@ export class NotificationService {
           return paginatedN;
         }),
         map((paginatedN: IPaginatedNotifications) => {
-          paginatedN.data = paginatedN.data.map((s) => {
-            const date = s.date ? new Date(s.date).toLocaleDateString() : '';
-            return {
-              ...s,
-              date: date.split('GMT')[0],
-            };
-          });
+          paginatedN.data = paginatedN.data.map(n => ({...n, date:  new Date(n.date as string).toLocaleString()}))
           this.paginatedNotifications = paginatedN
         })
       );
@@ -148,11 +138,7 @@ export class NotificationService {
     }
     new Promise((resolve) => {
       this.http
-        .get<ISchedule>(`${environment.apiUrl}/schedule/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get<ISchedule>(`${environment.apiUrl}/schedule/${id}`)
         .pipe(
           catchError((e) => {
             if (e?.status && e.status == 401) {
@@ -177,11 +163,7 @@ export class NotificationService {
 
     new Promise((resolve) => {
       this.http
-        .delete<void>(`${environment.apiUrl}/schedule/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .delete<void>(`${environment.apiUrl}/schedule/${id}`)
         .pipe(
           catchError((e) => {
             if (e?.status && e.status == 401) {
@@ -198,5 +180,9 @@ export class NotificationService {
           resolve(1);
         });
     });
+  }
+
+  toDaysCount(date: string): string {
+    return toDaysCount(date); 
   }
 }
