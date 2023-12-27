@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,28 +15,33 @@ export class AddClientComponent {
 
   }
   clientFormGroup = new UntypedFormGroup({
-    firstName: new UntypedFormControl('', {
+    firstName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)]
     }),
-    lastName: new UntypedFormControl('', {
+    lastName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)]
     }),
-    email: new UntypedFormControl('', {
+    email: new FormControl('', {
       validators: [Validators.email]
     }),
-    phoneNumber: new UntypedFormControl('', {
+    lastSeen: new FormControl(new Date(), {
+      validators: [Validators.required]
+    }),
+    phoneNumber: new FormControl('', {
       validators: [Validators.pattern(/^\+[0-9]{1,2}[0-9]{10}$/)]
     }),
-    description: new UntypedFormControl('')
+    description: new FormControl('')
   });
 
   async onSubmit() {
+
     const newClient: INewClient = {
       firstName: this.clientFormGroup.get('firstName')?.value,
       lastName: this.clientFormGroup.get('lastName')?.value,
       phone: this.clientFormGroup.get('phoneNumber')?.value,
       email: this.clientFormGroup.get('email')?.value,
-      description: this.clientFormGroup.get('description')?.value
+      description: this.clientFormGroup.get('description')?.value,
+      lastSeen: this.clientFormGroup.get('lastSeen')?.value?.toISOString()
     };
 
     this.clientService.createClient(newClient).then(() => {

@@ -4,6 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faEnvelope, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { ENotificationStatus, INewSchedule, ISchedule, NotificationService } from '../../notification.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { toDaysCount } from 'src/app/utils';
 
 
 @Component({
@@ -66,11 +67,12 @@ export class ActiveNotificationsComponent implements OnInit {
           }
       }
   }
+
   ngOnDestroy(): void {
- 
     this.destroy$.next(true);
-    
   }
 
-
+  toDaysCount(date: string) {
+    return toDaysCount(date)
+  }
 }

@@ -37,6 +37,11 @@
         <td mat-cell *matCellDef="let element">{{ element?.email || '-' }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="LastSeen" *ngIf="!isMobile">
+        <th mat-header-cell *matHeaderCellDef>Visited</th>
+        <td mat-cell *matCellDef="let element" [matTooltip]="toDaysCount(element?.lastSeen)">{{ (element?.lastSeen | date: 'short') || 'No visits' }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="Schedule">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">

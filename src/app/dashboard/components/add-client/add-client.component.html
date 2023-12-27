@@ -54,15 +54,26 @@
             <section>
                 <header>
                     <h1>
-                        Description
+                        Details
                     </h1>
                 </header>
                 <div class="input-div">
+                    <div class="input-field">
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="lastSeen">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+    
+                        </mat-form-field>
+                        </div>
                     <mat-form-field class="input-field">
                         <mat-label>Description</mat-label>
                         <textarea matInput placeholder="Description" formControlName="description"></textarea>
                     </mat-form-field>
                 </div>
+                    
             </section>
             <div class="input-div submit">
                 <button mat-raised-button color="primary" [disabled]="!clientFormGroup.valid">Create
