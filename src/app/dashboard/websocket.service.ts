@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth } from 'aws-amplify';
-import { take } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from './notification.service';
 
@@ -15,7 +16,7 @@ export class WebSocketService implements OnDestroy {
     lastRetry: new Date(),
   };
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService, private _snackbar: MatSnackBar) {}
   listenToSocket() {
     Auth.currentSession().then((c) => {
       this.ws = new WebSocket(
@@ -58,7 +59,13 @@ export class WebSocketService implements OnDestroy {
                 case 'updateNotification':
                 console.log('refreshing notification due to update');
                 // trigger the observable once.
-                this.notificationService.getNotifications(0, 0 , true).then(sub => sub.pipe(take(1)).subscribe());
+                this.notificationService.getNotifications(0, 0 , true).then(sub => sub.pipe(take(1), tap(() => {
+                    this._snackbar.open('Notifications have been updated.', 'close', {
+                        horizontalPosition: 'right',
+                        verticalPosition: "top",
+                        duration: 5 * 1000 // 5 seconds
+                    })
+                })).subscribe());
                 break;
                 case 'health-response':
                     console.debug('ws connection is healthy')

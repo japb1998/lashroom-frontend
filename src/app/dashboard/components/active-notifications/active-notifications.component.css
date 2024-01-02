@@ -1,3 +1,6 @@
+.dashboard-section {
+    margin-top: 1rem;
+}
 .status {
     width: 20px;
     height: 20px;
@@ -8,10 +11,26 @@
 }
 
 .overflow-container {
-    overflow: scroll;
+    overflow: auto;
     max-width: 90vw;
     max-height: 50vh;
+    scrollbar-width: thin;
+    scrollbar-color: #e0e0e0;
 }
+
+.custom-table tr {
+    background-color: #f5f5f5;
+    border-radius: 1rem !important;
+}
+
+.mat-mdc-paginator {
+    margin-top: .5rem;
+    border-radius: 0.25rem;
+}
+.mat-mdc-paginator-container, .mat-mdc-paginator-outer-container, .mat-mdc-paginator{
+    background-color: #f5f5f5 
+}
+
 .sent {
     background-color: #1cac78
 }
