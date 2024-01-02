@@ -34,7 +34,7 @@ export class NewNotificationComponent implements OnInit {
     date: new FormControl(new Date(), {
       validators: [Validators.required]
     }),
-    time: new FormControl(null, {
+    time: new FormControl(this.getDefaultTime(), {
       validators: [Validators.required]
     }), 
     deliverByPhone: new FormControl(false, {
@@ -46,6 +46,7 @@ export class NewNotificationComponent implements OnInit {
   })
 
   ngOnInit (): void {
+  
     this.activeRouting.params
       .pipe(
         map(({ id }) => {
@@ -74,6 +75,7 @@ export class NewNotificationComponent implements OnInit {
 
   onSubmit () {
     let date: Date = this.scheduleFormGroup.get('date')?.value;
+    
     const [hrs, minutes] = this.scheduleFormGroup.get('time')?.value.split(':')
     let iso: string;
     // check
@@ -124,6 +126,15 @@ export class NewNotificationComponent implements OnInit {
     })
   }
 
+  getDefaultTime() {
+    // date + 1 minute
+    const d =  new Date(new Date().getTime() + 1000 * 60)
+    
+    if (d.getHours() < 12) {
+      return `0${d.getHours()}:${d.getMinutes()}`
+    }  
+    return  `${d.getHours()}:${d.getMinutes()}`
+  }
   onDestroy() {
     this.destroy$.next(true);
   }

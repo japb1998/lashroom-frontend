@@ -1,13 +1,4 @@
 <div class="dashboard-section">
-  <h2 style="
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-    ">
-    <span>Previous Clients </span><fa-icon [icon]="faUsers" style="color: #4d4d4d"></fa-icon>
-  </h2>
   <div class="filter">
     <mat-icon>sort_by_alpha</mat-icon>
     <form>
@@ -19,7 +10,7 @@
   </div>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
     <div class="overflow-container">
-    <table  mat-table [dataSource]="(clientList$|async)!" *ngIf="(clientListLength$ | async)! > 0; else noClient">
+    <table  class="custom-table" mat-table [dataSource]="(clientList$|async)!" *ngIf="(clientListLength$ | async)! > 0; else noClient">
 
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef>Name</th>

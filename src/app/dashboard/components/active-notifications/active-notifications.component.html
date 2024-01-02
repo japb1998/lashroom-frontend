@@ -1,9 +1,7 @@
 <div class="dashboard-section">
-  <h2 style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem"><span> Active
-      Notifications </span> <fa-icon [icon]="faEnvelope" style="color: #4d4d4d"></fa-icon></h2>
   <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
     <div class="overflow-container">
-    <table mat-table [dataSource]="(notificationList$ | async)!" style="width: 100%"
+    <table class="custom-table" mat-table [dataSource]="(notificationList$ | async)!" style="width: 100%"
       *ngIf="notificationListLenght$ | async ; else noClient">
 
 
@@ -31,7 +29,7 @@
 
       <ng-container matColumnDef="Actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let element"><button mat-flat-button (click)="deleteNotification(element.id)" matTooltip="delete notification"><fa-icon [icon]="faTrashCan" style="color: #4d4d4d" size="xl"></fa-icon></button></td>
+        <td mat-cell *matCellDef="let element"><button mat-flat-button (click)="deleteNotification(element.id)" matTooltip="delete notification">remove</button></td>
       </ng-container>
 
       <ng-container matColumnDef="Status">
