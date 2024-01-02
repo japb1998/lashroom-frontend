@@ -40,6 +40,7 @@
                     </mat-form-field>
                     <mat-form-field class="input-field">
                         <input matInput type="time" matTooltip="06:00PM" formControlName="time">
+                        <mat-hint *ngIf="scheduleFormGroup.get('time')?.errors" style="color:red">{{scheduleFormGroup.get('time')?.errors?.['date']}}</mat-hint>
                       </mat-form-field>
                     <div class="notification-methods">
                         <mat-checkbox formControlName="deliverByPhone" >Phone</mat-checkbox>

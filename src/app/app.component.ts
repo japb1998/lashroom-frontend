@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
+import { WebSocketService } from './dashboard/websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,8 @@ import { environment } from 'src/environments/environment';
 export class AppComponent implements OnInit{
   title = 'lashroomFrontend';
 
+  constructor(private wsService: WebSocketService) {}
   ngOnInit(): void {
-    if (environment?.log === 'debug') {
-      Auth.currentSession().then((c) => {
-
-        console.log(c.getIdToken().getJwtToken())
-      })
-    }
+    this.wsService.listenToSocket();
   }
-  
-
 }
