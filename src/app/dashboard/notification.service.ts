@@ -43,6 +43,9 @@ export interface IPaginatedNotifications {
   providedIn: 'root',
 })
 export class NotificationService {
+  currentPage: number = 0;
+  currentLimit: number = 10;
+
   tokenId?: string;
 
   #paginatedNotifications: BehaviorSubject<IPaginatedNotifications> = new BehaviorSubject(
@@ -90,13 +93,23 @@ export class NotificationService {
     }
   }
 
-  async getNotifications(page = 0, limit = 10) {
+  async getNotifications(page = 0, limit = 10, isReload = false): Promise<Observable<void>>{
     const token = this.tokenId ?? (await this.getTokenId());
 
     if (!token) {
       window.location.href = '/login';
     }
 
+    // enabling ws reload on current page.
+    // TODO: update individual notification.
+    if (isReload) {
+      page = this.currentPage;
+      limit = this.currentLimit;
+    } else {
+      this.currentLimit = limit;
+      this.currentPage = page;
+    }
+  
     return this.http
       .get<IPaginatedNotifications>(`${environment.apiUrl}/schedule`, {
         params: {

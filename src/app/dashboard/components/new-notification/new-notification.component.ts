@@ -79,6 +79,13 @@ export class NewNotificationComponent implements OnInit {
     // check
     if (!isNaN(Number(hrs)) && !isNaN(Number(minutes))) {
       date.setHours(Number(hrs), Number(minutes))
+
+      if (date.getTime() <= Date.now()) {
+        this.scheduleFormGroup.get('time')?.setErrors({
+          date: `Schedule date must be in the future.`,
+        })
+        return
+      }
       iso = date.toISOString();
       
     } else {
@@ -86,6 +93,7 @@ export class NewNotificationComponent implements OnInit {
         hour: 'not a number',
         minutes: 'not a number'
       })
+
       return;
     }
 
