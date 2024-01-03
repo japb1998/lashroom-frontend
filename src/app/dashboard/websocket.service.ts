@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth } from 'aws-amplify';
-import { take, tap } from 'rxjs';
+import { concatMap, from, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from './notification.service';
 
@@ -67,6 +67,17 @@ export class WebSocketService implements OnDestroy {
                     })
                 })).subscribe());
                 break;
+                case 'newNotification':
+                    this._snackbar.open('New notification was added.', 'refresh', {
+                        horizontalPosition: 'right',
+                        verticalPosition: "top",
+                        duration: 5 * 1000 // 5 seconds,
+                    }).afterDismissed()
+                    .pipe(concatMap(() => from(this.notificationService.getNotifications(0, 0 , true))),concatMap(s => s), take(1), tap(() => {
+                        console.log('successfully got new notifications')
+                    }))
+                    .subscribe()
+                break
                 case 'health-response':
                     console.debug('ws connection is healthy')
                     break;
