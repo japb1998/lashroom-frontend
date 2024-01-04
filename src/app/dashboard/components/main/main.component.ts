@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subscription, of } from 'rxjs';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { Component } from '@angular/core';
 import { ClientService, IClient } from '../../client.service';
 import { NotificationService } from '../../notification.service';
 

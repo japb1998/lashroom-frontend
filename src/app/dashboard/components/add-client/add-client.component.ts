@@ -27,7 +27,7 @@ export class AddClientComponent {
     lastSeen: new FormControl(new Date(), {
       validators: [Validators.required]
     }),
-    phoneNumber: new FormControl('', {
+    phoneNumber: new FormControl('+1', {
       validators: [Validators.pattern(/^\+[0-9]{1,2}[0-9]{10}$/)]
     }),
     description: new FormControl('')
