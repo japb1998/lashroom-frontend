@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { AddClientComponent } from './components/add-client/add-client.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SingleClientComponent } from './components/single-client/single-client.component';
+import { NotificationDetailsComponent } from './components/notification-details/notification-details.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SingleClientComponent } from './components/single-client/single-client.
     ActiveNotificationsComponent,
     ClientsComponent,
     AddClientComponent,
-    SingleClientComponent
+    SingleClientComponent,
+    NotificationDetailsComponent
   ],
   imports: [
     CommonModule,
