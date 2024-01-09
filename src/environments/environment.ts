@@ -5,8 +5,7 @@
 export const environment = {
   production: false,
   log:'debug',
-  // apiUrl: 'https://yt5xqkxx7b.execute-api.us-east-1.amazonaws.com/dev',
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'https://yt5xqkxx7b.execute-api.us-east-1.amazonaws.com/dev',
   wsUrl: 'wss://znanmbc1ga.execute-api.us-east-1.amazonaws.com/dev'
 };
 
