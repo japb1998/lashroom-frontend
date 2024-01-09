@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { SnackBarComponent } from '../../../snack-bar/snack-bar.component'
-import { BehaviorSubject, filter, map, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs'
+import { BehaviorSubject, concatMap, filter, from, map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { INewSchedule, NotificationService } from '../../notification.service'
 import { ClientService, IClient } from '../../client.service'
@@ -18,6 +18,7 @@ export class NewNotificationComponent implements OnInit {
   clients$!: Observable<IClient[]>;
   destroy$: Subject<boolean> = new Subject();
   notificationDate: Date = new Date();
+  selectedUser!: IClient;
 
   constructor (
     private notificationService: NotificationService,
@@ -46,7 +47,7 @@ export class NewNotificationComponent implements OnInit {
   })
 
   ngOnInit (): void {
-  
+    //  check for notification for a specific id
     this.activeRouting.params
       .pipe(
         map(({ id }) => {
@@ -71,6 +72,15 @@ export class NewNotificationComponent implements OnInit {
             console.error(`could not get client ID=${id}`)
           }
       })
+
+      this.scheduleFormGroup.get('client')?.valueChanges.pipe(filter((v)=> !!v), concatMap(id => from(this.clientService.getSingleClient(id))), tap((usr) => this.selectedUser = usr), tap(() => {
+        if (!this.selectedUser.phone) {
+          this.scheduleFormGroup.get('deliverByPhone')?.disable()
+        }
+        if (!this.selectedUser.email) {
+          this.scheduleFormGroup.get('deliverByEmail')?.disable()
+        }
+      })).subscribe();
   }
 
   onSubmit () {
