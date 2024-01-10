@@ -19,7 +19,7 @@ export class NewNotificationComponent implements OnInit {
   destroy$: Subject<boolean> = new Subject();
   notificationDate: Date = new Date();
   selectedUser!: IClient;
-
+  dateSelection = new FormControl("date")
   constructor (
     private notificationService: NotificationService,
     private clientService: ClientService,
@@ -34,6 +34,9 @@ export class NewNotificationComponent implements OnInit {
     client: new FormControl('', {validators: [Validators.required]} ),
     date: new FormControl(new Date(), {
       validators: [Validators.required]
+    }),
+    weeks:  new FormControl(1, {
+      validators: [Validators.required, Validators.min(1)]
     }),
     time: new FormControl(this.getDefaultTime(), {
       validators: [Validators.required]
@@ -84,7 +87,28 @@ export class NewNotificationComponent implements OnInit {
   }
 
   onSubmit () {
-    let date: Date = this.scheduleFormGroup.get('date')?.value;
+    
+    let date: Date;
+    
+    switch(this.dateSelection.value) {
+      case 'date':
+        date = this.scheduleFormGroup.get('date')?.value;
+        break;
+      case 'weeks':
+        const weeks = Number(this.scheduleFormGroup.get('weeks')?.value)
+
+        if (!isNaN(weeks) && weeks > 0) {
+          date = new Date(new Date().getTime() + weeks * 7 * 24 * 60 * 60 * 1000)
+        } else {
+          console.error(`invalid weeks number ${this.scheduleFormGroup.get('date')?.value}`)
+          return;
+        }
+        break;
+      default:
+        console.error(`invalid date type ${this.scheduleFormGroup.get('date')?.value}`)
+        return;
+        
+    } 
     
     const [hrs, minutes] = this.scheduleFormGroup.get('time')?.value.split(':')
     let iso: string;
