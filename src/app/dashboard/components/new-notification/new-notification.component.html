@@ -1,7 +1,7 @@
 <div class="scheduler-container">
     <div>
         <h1 style="text-align: center;">
-            Client Notification
+            Notification Form
         </h1>
         <form class="schedule-form" [formGroup]="scheduleFormGroup" (ngSubmit)="onSubmit()">
             <section>
@@ -10,49 +10,70 @@
                         Client Information
                     </h1>
                 </header>
-                <div class="input-div" >
-                    <mat-form-field class="input-field" >
+                <div class="input-div">
+                    <mat-form-field class="input-field">
                         <mat-label>Client</mat-label>
-                        <mat-select formControlName="client"> 
+                        <mat-select formControlName="client">
                             <mat-option *ngFor="let client of (clients$ | async )" [value]="client.id">
-                              {{client.firstName}} {{client.lastName}}
+                                {{client.firstName}} {{client.lastName}}
                             </mat-option>
-                          </mat-select>
+                        </mat-select>
                     </mat-form-field>
 
                 </div>
             </section>
-          
+
             <section>
                 <header>
                     <h1>
                         Notification Setup
                     </h1>
                 </header>
-                <div class="input-div">
-                        <mat-form-field class="input-field">
-                                <mat-label>Choose a date</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="date">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                <div class="date-method">
+                    <h3>Date selection type</h3>
+                    <mat-radio-group aria-label="select date input options" [formControl]="dateSelection">
+                        <mat-radio-button value="weeks">Number of weeks</mat-radio-button>
+                        <mat-radio-button value="date">Select Date</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div>
+                    <h3>Notification Date</h3>
+                    <div class="input-div">
 
-                    </mat-form-field>
-                    <mat-form-field class="input-field">
-                        <input matInput  type="time" matTooltip="06:00PM" formControlName="time">
-                        <mat-hint *ngIf="scheduleFormGroup.get('time')?.errors" style="color:red">{{scheduleFormGroup.get('time')?.errors?.['date']}}</mat-hint>
-                      </mat-form-field>
-                    <div class="notification-methods">
-                        <mat-checkbox formControlName="deliverByPhone" >Phone</mat-checkbox>
-                        <mat-checkbox formControlName="deliverByEmail" >Email</mat-checkbox>
+                        <mat-form-field class="input-field" *ngIf="dateSelection?.value === 'date'; else weeks" >
+                           
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="date">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                           
+                        </mat-form-field>
+                        <ng-template #weeks>
+                            <mat-form-field class="input-field">
+                           
+                                <mat-label>Number of weeks</mat-label>
+                                <input matInput type="number" min="1" formControlName="weeks">
+                                <mat-hint *ngIf="scheduleFormGroup.get('weeks')?.errors"
+                                style="color:red">invalid number of weeks. Min 1</mat-hint>
+                        </mat-form-field>
+                        </ng-template>
+                        <mat-form-field class="input-field">
+                            <mat-label>Choose time</mat-label>
+                            <input matInput type="time" matTooltip="06:00PM" formControlName="time">
+                            <mat-hint *ngIf="scheduleFormGroup.get('time')?.errors"
+                                style="color:red">{{scheduleFormGroup.get('time')?.errors?.['date']}}</mat-hint>
+                        </mat-form-field>
+                        <div class="notification-methods">
+                            <mat-checkbox formControlName="deliverByPhone">Phone</mat-checkbox>
+                            <mat-checkbox formControlName="deliverByEmail">Email</mat-checkbox>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <div class="input-div submit">
-                <button mat-raised-button color="primary" >Create
-                    
-                </button>
+                <button mat-raised-button color="primary" >Create</button>
 
             </div>
 
